@@ -21,7 +21,25 @@ public class ArenaPlugin : BaseUnityPlugin
     {
         Log.Init(Logger);
 
+#if DEBUG
+        EnableDebugMode();
+#endif
+
         TeleporterInteraction.onTeleporterFinishGlobal += TeleporterInteraction_onTeleporterFinishGlobal;
+    }
+
+    private void EnableDebugMode()
+    {
+        // Make player invulnerable:
+        On.RoR2.HealthComponent.TakeDamage += (orig, self, damageInfo) =>
+        {
+            var charComponent = self.GetComponent<CharacterBody>();
+            if (charComponent != null && charComponent.isPlayerControlled)
+            {
+                return;
+            }
+            orig(self, damageInfo);
+        };
     }
 
     private void TeleporterInteraction_onTeleporterFinishGlobal(TeleporterInteraction obj)
