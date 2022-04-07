@@ -16,7 +16,7 @@ public class ArenaPlugin : BaseUnityPlugin
     public const string PluginGUID = PluginAuthor + "." + PluginName;
     public const string PluginAuthor = "peterbozso";
     public const string PluginName = "Arena";
-    public const string PluginVersion = "1.0.0";
+    public const string PluginVersion = "0.0.1";
 
     // The Awake() method is run at the very start when the game is initialized.
     public void Awake()
