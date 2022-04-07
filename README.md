@@ -1,4 +1,4 @@
-# Arena Risk of Rain 2 Mod
+# Risk of Rain 2 Arena Mod
 
 Arena is a Risk of Rain 2 mod for beating your friends at the end of each stage. See the [mod's readme](src/README.md) for more details.
 
