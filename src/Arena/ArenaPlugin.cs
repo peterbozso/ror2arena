@@ -23,7 +23,7 @@ public class ArenaPlugin : BaseUnityPlugin
     {
         Log.Init(Logger);
 
-        Log.LogInfo("Welcome to the Arena!");
+        Log.LogInfo("Good people of the Imperial City, welcome to the Arena!");
     }
 
     // The Update() method is run on every frame of the game.
