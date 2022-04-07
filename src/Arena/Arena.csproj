@@ -87,7 +87,7 @@
   </ItemGroup>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="copy /Y &quot;$(TargetPath)&quot; &quot;C:\Users\peter\AppData\Roaming\Thunderstore Mod Manager\DataFolder\RiskOfRain2\profiles\Multi\BepInEx\plugins&quot;" />
+    <Exec Command="copy /Y &quot;$(TargetPath)&quot; &quot;C:\Users\peter\AppData\Roaming\Thunderstore Mod Manager\DataFolder\RiskOfRain2\profiles\Dev\BepInEx\plugins&quot;" />
   </Target>
 
 </Project>
