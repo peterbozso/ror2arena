@@ -39,28 +39,8 @@ public class ArenaPlugin : BaseUnityPlugin
 #if DEBUG
         if (Input.GetKeyDown(KeyCode.F11))
         {
-            EnableDebugMode();
+            DebugMode.Enable();
         }
 #endif
-    }
-
-    private void EnableDebugMode()
-    {
-        // Make player invulnerable:
-        On.RoR2.HealthComponent.TakeDamage += (orig, self, damageInfo) =>
-        {
-            var charComponent = self.GetComponent<CharacterBody>();
-
-            if (charComponent != null && charComponent.isPlayerControlled)
-            {
-                return;
-            }
-
-            orig(self, damageInfo);
-        };
-
-        // Finish the teleporter event immediately:
-        TeleporterInteraction.instance.currentState.outer.SetNextState(
-            new TeleporterInteraction.ChargedState());
     }
 }
