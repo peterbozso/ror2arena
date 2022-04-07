@@ -28,7 +28,9 @@ public class ArenaPlugin : BaseUnityPlugin
     private void TeleporterInteraction_onTeleporterChargedGlobal(TeleporterInteraction tpi)
     {
         ChatMessage.Send("Good people of the Imperial City, welcome to the Arena!");
-        // TODO: disable teleporter, stop clock, add Artifact of Chaos
+
+        Clock.Pause();
+        // TODO: disable teleporter, add Artifact of Chaos
     }
 
     // The Update() method is run on every frame of the game.
