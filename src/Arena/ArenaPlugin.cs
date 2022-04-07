@@ -22,20 +22,31 @@ public class ArenaPlugin : BaseUnityPlugin
     {
         Log.Init(Logger);
 
+        On.RoR2.Run.Awake += Run_Awake;
+        On.RoR2.Run.OnDestroy += Run_OnDestroy;
+    }
+
+    private void Run_OnDestroy(On.RoR2.Run.orig_OnDestroy orig, Run self)
+    {
+        orig(self);
+
         TeleporterInteraction.onTeleporterChargedGlobal += TeleporterInteraction_onTeleporterChargedGlobal;
-        TeleporterInteraction.onTeleporterFinishGlobal += TeleporterInteraction_onTeleporterFinishGlobal;
+    }
+
+    private void Run_Awake(On.RoR2.Run.orig_Awake orig, Run self)
+    {
+        orig(self);
+
+        TeleporterInteraction.onTeleporterChargedGlobal -= TeleporterInteraction_onTeleporterChargedGlobal;
     }
 
     private void TeleporterInteraction_onTeleporterChargedGlobal(TeleporterInteraction tpi)
     {
         ChatMessage.Send("Good people of the Imperial City, welcome to the Arena!");
+
         ArenaManager.Clock.Pause();
         ArenaManager.FriendlyFire.Enable();
         ArenaManager.Teleporter.Disable();
-    }
-
-    private void TeleporterInteraction_onTeleporterFinishGlobal(TeleporterInteraction obj)
-    {
     }
 
     // The Update() method is run on every frame of the game.
@@ -48,6 +59,7 @@ public class ArenaPlugin : BaseUnityPlugin
         }
         else if (Input.GetKeyDown(KeyCode.F10))
         {
+            // TODO: Do these automatically when there's only one player remaining:
             ArenaManager.Clock.Resume();
             ArenaManager.FriendlyFire.Disable();
             ArenaManager.Teleporter.Enable();
