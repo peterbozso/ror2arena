@@ -1,6 +1,7 @@
 ﻿using BepInEx;
 using R2API.Utils;
 using RoR2;
+using UnityEngine;
 
 namespace Arena;
 
@@ -21,28 +22,10 @@ public class ArenaPlugin : BaseUnityPlugin
     {
         Log.Init(Logger);
 
-#if DEBUG
-        EnableDebugMode();
-#endif
-
-        TeleporterInteraction.onTeleporterFinishGlobal += TeleporterInteraction_onTeleporterFinishGlobal;
+        TeleporterInteraction.onTeleporterChargedGlobal += TeleporterInteraction_onTeleporterChargedGlobal;
     }
 
-    private void EnableDebugMode()
-    {
-        // Make player invulnerable:
-        On.RoR2.HealthComponent.TakeDamage += (orig, self, damageInfo) =>
-        {
-            var charComponent = self.GetComponent<CharacterBody>();
-            if (charComponent != null && charComponent.isPlayerControlled)
-            {
-                return;
-            }
-            orig(self, damageInfo);
-        };
-    }
-
-    private void TeleporterInteraction_onTeleporterFinishGlobal(TeleporterInteraction obj)
+    private void TeleporterInteraction_onTeleporterChargedGlobal(TeleporterInteraction tpi)
     {
         ChatMessage.Send("Good people of the Imperial City, welcome to the Arena!");
         // TODO: disable teleporter, stop clock, add Artifact of Chaos
@@ -51,5 +34,31 @@ public class ArenaPlugin : BaseUnityPlugin
     // The Update() method is run on every frame of the game.
     private void Update()
     {
+#if DEBUG
+        if (Input.GetKeyDown(KeyCode.F11))
+        {
+            EnableDebugMode();
+        }
+#endif
+    }
+
+    private void EnableDebugMode()
+    {
+        // Make player invulnerable:
+        On.RoR2.HealthComponent.TakeDamage += (orig, self, damageInfo) =>
+        {
+            var charComponent = self.GetComponent<CharacterBody>();
+
+            if (charComponent != null && charComponent.isPlayerControlled)
+            {
+                return;
+            }
+
+            orig(self, damageInfo);
+        };
+
+        // Finish the teleporter event immediately:
+        TeleporterInteraction.instance.currentState.outer.SetNextState(
+            new TeleporterInteraction.ChargedState());
     }
 }
