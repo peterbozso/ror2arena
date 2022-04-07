@@ -18,9 +18,5 @@ internal static class DebugMode
 
             orig(self, damageInfo);
         };
-
-        // Finish the teleporter event immediately:
-        TeleporterInteraction.instance.currentState.outer.SetNextState(
-            new TeleporterInteraction.ChargedState());
     }
 }

@@ -23,6 +23,7 @@ public class ArenaPlugin : BaseUnityPlugin
         Log.Init(Logger);
 
         TeleporterInteraction.onTeleporterChargedGlobal += TeleporterInteraction_onTeleporterChargedGlobal;
+        TeleporterInteraction.onTeleporterFinishGlobal += TeleporterInteraction_onTeleporterFinishGlobal;
     }
 
     private void TeleporterInteraction_onTeleporterChargedGlobal(TeleporterInteraction tpi)
@@ -30,7 +31,11 @@ public class ArenaPlugin : BaseUnityPlugin
         ChatMessage.Send("Good people of the Imperial City, welcome to the Arena!");
         ArenaManager.Clock.Pause();
         ArenaManager.FriendlyFire.Enable();
-        // TODO: disable teleporter
+        ArenaManager.Teleporter.Disable();
+    }
+
+    private void TeleporterInteraction_onTeleporterFinishGlobal(TeleporterInteraction obj)
+    {
     }
 
     // The Update() method is run on every frame of the game.
@@ -40,6 +45,12 @@ public class ArenaPlugin : BaseUnityPlugin
         if (Input.GetKeyDown(KeyCode.F11))
         {
             DebugMode.Enable();
+        }
+        else if (Input.GetKeyDown(KeyCode.F10))
+        {
+            ArenaManager.Clock.Resume();
+            ArenaManager.FriendlyFire.Disable();
+            ArenaManager.Teleporter.Enable();
         }
 #endif
     }
