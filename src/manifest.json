@@ -2,7 +2,7 @@
 	"name": "Arena",
 	"version_number": "1.0.0",
 	"website_url": "https://github.com/peterbozso/arena",
-	"description": "Arena",
+	"description": "Beat your friends at the end of each stage in the Arena!",
 	"dependencies": [
 		"bbepis-BepInExPack-5.4.9",
 		"RiskofThunder-HookGenPatcher-1.2.1"
