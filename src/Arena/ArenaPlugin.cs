@@ -1,6 +1,7 @@
 ﻿using BepInEx;
 using R2API;
 using R2API.Utils;
+using RoR2;
 
 namespace Arena;
 
@@ -23,7 +24,13 @@ public class ArenaPlugin : BaseUnityPlugin
     {
         Log.Init(Logger);
 
-        Log.LogInfo("Good people of the Imperial City, welcome to the Arena!");
+        TeleporterInteraction.onTeleporterFinishGlobal += TeleporterInteraction_onTeleporterFinishGlobal;
+    }
+
+    private void TeleporterInteraction_onTeleporterFinishGlobal(TeleporterInteraction obj)
+    {
+        ChatMessage.Send("Good people of the Imperial City, welcome to the Arena!");
+        // TODO: disable teleporter, add Artifact of Chaos!
     }
 
     // The Update() method is run on every frame of the game.
