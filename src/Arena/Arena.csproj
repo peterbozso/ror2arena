@@ -13,14 +13,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Remove="ExamplePlugin.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include="ExamplePlugin.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="BepInEx.Analyzers" Version="1.0.*">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
