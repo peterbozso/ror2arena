@@ -16,6 +16,6 @@ To be able to reload the mod while developing without restarting the game (which
 4. Change the second argument of the copy command in the post-build event in the [Arena.csproj](src/Arena/Arena.csproj) file to use the correct path to your `BepInEx\scripts` folder. [More info.](https://github.com/risk-of-thunder/R2Wiki/wiki/Build-Events#copy-output-dll=)
 5. Start the game modded.
 6. Build the solution.
-7. Load the mod by pressing `F6` in the main menu.
+7. Load the mod by pressing `F6` on the main menu.
 
 Whenever you make changes to the code, repeat step 4 and 5. Make sure you reload the mod only on the main menu, not during a run, otherwise (because of the way the mod is structured) you could end up with some unexpected behavior.
