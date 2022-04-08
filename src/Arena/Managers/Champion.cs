@@ -9,12 +9,12 @@ public class Champion
     {
         get
         {
-            var players = CharacterMaster.readOnlyInstancesList;
-            var alivePlayers = players.Where(player => IsAlive(player)).ToArray();
+            var players = PlayerCharacterMasterController.instances;
+            var alivePlayers = players.Where(player => IsAlive(player.master)).ToArray();
 
             if (alivePlayers.Length == 1)
             {
-                return alivePlayers[0].GetBody().GetUserName();
+                return alivePlayers[0].master.GetBody().GetUserName();
             }
 
             return string.Empty;
