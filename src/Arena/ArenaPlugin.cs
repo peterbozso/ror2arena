@@ -73,15 +73,19 @@ public class ArenaPlugin : BaseUnityPlugin
             return;
         }
 
-        Log.LogMessage(ArenaManager.Graveyard.IsAllDead
-            ? "Only the Champion is alive."
-            : "There are multiple fighters alive.");
+        var championName = ArenaManager.Champion.Name;
 
-        if (ArenaManager.Graveyard.IsAllDead)
+        Log.LogMessage(championName == string.Empty
+            ? "There are still multiple fighters alive."
+            : "Only the Champion is alive: " + championName);
+
+        if (championName != string.Empty)
         {
             ArenaManager.Teleporter.Enable();
 
             On.RoR2.CharacterBody.OnDeathStart -= CharacterBody_OnDeathStart;
+
+            ChatMessage.Send($"Good people, we have a winner! All hail the combatant, {championName}! Victor, leave the Arena now and rest! You've earned it!");
         }
     }
 }

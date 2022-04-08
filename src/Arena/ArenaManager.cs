@@ -57,7 +57,7 @@ internal static class ArenaManager
                 Interactability.ConditionsNotMet;
     }
 
-    public static class Graveyard
+    public static class Champion
     {
         public static bool IsAllDead
         {
@@ -66,6 +66,24 @@ internal static class ArenaManager
                 var players = PlayerCharacterMasterController.instances;
                 var aliveCount = players.Count(player => IsAlive(player.master));
                 return aliveCount == 1;
+            }
+        }
+
+        public static string Name
+        {
+            get
+            {
+                var players = PlayerCharacterMasterController.instances;
+                var aliveCount = players.Count(player => IsAlive(player.master));
+
+                if (aliveCount == 1)
+                {
+                    return players
+                        .First(player => IsAlive(player.master))
+                        .master.GetBody().GetUserName();
+                }
+
+                return string.Empty;
             }
         }
 
