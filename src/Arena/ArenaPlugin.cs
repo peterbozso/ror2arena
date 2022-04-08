@@ -17,9 +17,14 @@ public class ArenaPlugin : BaseUnityPlugin
     {
         Log.Init(Logger);
 
-        // TODO: Unsubscribe from these on destroy:
         On.RoR2.Run.Awake += Run_Awake;
         On.RoR2.Run.OnDestroy += Run_OnDestroy;
+    }
+
+    public void OnDestroy()
+    {
+        On.RoR2.Run.Awake -= Run_Awake;
+        On.RoR2.Run.OnDestroy -= Run_OnDestroy;
     }
 
     private void Run_Awake(On.RoR2.Run.orig_Awake orig, Run self)
