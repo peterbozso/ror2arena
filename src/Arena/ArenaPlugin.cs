@@ -1,4 +1,5 @@
-﻿using BepInEx;
+﻿using Arena.Managers;
+using BepInEx;
 using R2API.Utils;
 using RoR2;
 
@@ -13,7 +14,10 @@ public class ArenaPlugin : BaseUnityPlugin
     public const string PluginName = "Arena";
     public const string PluginVersion = "0.0.1";
 
-    private readonly Portals Portals = new();
+    private readonly Champion _champion = new();
+    private readonly Clock _clock = new();
+    private readonly FriendlyFire _friendlyFire = new();
+    private readonly Portals _portals = new();
 
     public void Awake()
     {
@@ -36,7 +40,7 @@ public class ArenaPlugin : BaseUnityPlugin
         TeleporterInteraction.onTeleporterChargedGlobal += TeleporterInteraction_onTeleporterChargedGlobal;
         On.RoR2.Stage.Start += Stage_Start;
 
-        Log.LogMessage("Arena hooked.");
+        Log.LogMessage("Arena plugin hooked.");
     }
 
     private void Run_OnDestroy(On.RoR2.Run.orig_OnDestroy orig, Run self)
@@ -46,12 +50,12 @@ public class ArenaPlugin : BaseUnityPlugin
         TeleporterInteraction.onTeleporterChargedGlobal -= TeleporterInteraction_onTeleporterChargedGlobal;
         On.RoR2.Stage.Start -= Stage_Start;
 
-        Log.LogMessage("Arena unhooked.");
+        Log.LogMessage("Arena plugin unhooked.");
     }
 
     private void TeleporterInteraction_onTeleporterChargedGlobal(TeleporterInteraction tpi)
     {
-        if (ArenaManager.Champion.Name != string.Empty)
+        if (_champion.Name != string.Empty)
         {
             Log.LogMessage("Only one player alive. Not starting the event.");
             return;
@@ -59,19 +63,23 @@ public class ArenaPlugin : BaseUnityPlugin
 
         ChatMessage.Send("Good people of the Imperial City, welcome to the Arena!");
 
-        ArenaManager.Clock.Pause();
-        ArenaManager.FriendlyFire.Enable();
-        Portals.Disable();
+        _clock.Pause();
+        _friendlyFire.Enable();
+        _portals.Disable();
 
         On.RoR2.CharacterBody.OnDeathStart += CharacterBody_OnDeathStart;
+
+        Log.LogMessage("Arena event started.");
     }
 
     private void Stage_Start(On.RoR2.Stage.orig_Start orig, Stage self)
     {
         orig(self);
 
-        ArenaManager.Clock.Resume();
-        ArenaManager.FriendlyFire.Disable();
+        _clock.Resume();
+        _friendlyFire.Disable();
+
+        Log.LogMessage("Arena event ended.");
     }
 
     private void CharacterBody_OnDeathStart(On.RoR2.CharacterBody.orig_OnDeathStart orig, CharacterBody self)
@@ -83,7 +91,7 @@ public class ArenaPlugin : BaseUnityPlugin
             return;
         }
 
-        var championName = ArenaManager.Champion.Name;
+        var championName = _champion.Name;
 
         Log.LogMessage(championName == string.Empty
             ? "There are still multiple fighters alive."
@@ -93,7 +101,7 @@ public class ArenaPlugin : BaseUnityPlugin
         {
             On.RoR2.CharacterBody.OnDeathStart -= CharacterBody_OnDeathStart;
 
-            Portals.Enable();
+            _portals.Enable();
 
             ChatMessage.Send($"Good people, we have a winner! All hail the combatant, {championName}! Champion, leave the Arena now and rest! You've earned it!");
         }

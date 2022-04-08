@@ -2,7 +2,7 @@
 using RoR2;
 using System.Reflection;
 
-namespace Arena;
+namespace Arena.Managers;
 
 internal class Portals
 {
