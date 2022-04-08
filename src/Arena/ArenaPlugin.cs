@@ -81,9 +81,9 @@ public class ArenaPlugin : BaseUnityPlugin
 
         if (championName != string.Empty)
         {
-            ArenaManager.Teleporter.Enable();
-
             On.RoR2.CharacterBody.OnDeathStart -= CharacterBody_OnDeathStart;
+
+            ArenaManager.Teleporter.Enable();
 
             ChatMessage.Send($"Good people, we have a winner! All hail the combatant, {championName}! Victor, leave the Arena now and rest! You've earned it!");
         }
