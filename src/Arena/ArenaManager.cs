@@ -1,5 +1,7 @@
-﻿using RoR2;
+﻿using MonoMod.RuntimeDetour;
+using RoR2;
 using System.Linq;
+using System.Reflection;
 
 namespace Arena;
 
@@ -35,26 +37,49 @@ internal static class ArenaManager
         }
     }
 
-    public static class Teleporter
+    public class Teleporter
     {
-        public static void Disable()
+        public delegate Interactability orig_GetInteractability(GenericInteraction self, Interactor activator);
+        public Hook hook_GetInteractability;
+
+        public void Disable()
         {
-            // TODO: What about blue/gold/etc. portals?
             On.RoR2.TeleporterInteraction.GetInteractability += TeleporterInteraction_GetInteractability;
-            Log.LogMessage("Teleporter disabled.");
+
+            hook_GetInteractability = new Hook(typeof(GenericInteraction).GetMethod("RoR2.IInteractable.GetInteractability", BindingFlags.NonPublic | BindingFlags.Instance), typeof(Teleporter).GetMethod("GenericInteraction_GetInteractability"), this, new HookConfig());
+
+            Log.LogMessage("Portals disabled.");
         }
 
-        public static void Enable()
+        public void Enable()
         {
             On.RoR2.TeleporterInteraction.GetInteractability -= TeleporterInteraction_GetInteractability;
-            Log.LogMessage("Teleporter enabled.");
+            hook_GetInteractability.Dispose();
+            Log.LogMessage("Portals enabled.");
         }
 
-        private static Interactability TeleporterInteraction_GetInteractability
-            (On.RoR2.TeleporterInteraction.orig_GetInteractability orig,
+        private static Interactability TeleporterInteraction_GetInteractability(
+            On.RoR2.TeleporterInteraction.orig_GetInteractability orig,
             TeleporterInteraction self,
             Interactor activator) =>
                 Interactability.ConditionsNotMet;
+
+        public Interactability GenericInteraction_GetInteractability(
+            orig_GetInteractability orig,
+            GenericInteraction self,
+            Interactor activator)
+        {
+            var interactionName = self.name.ToLower();
+
+            Log.LogInfo("Interaction while portals are disabled: " + interactionName);
+
+            if (interactionName.Contains("portal"))
+            {
+                return Interactability.ConditionsNotMet;
+            }
+
+            return orig(self, activator);
+        }
     }
 
     public static class Champion

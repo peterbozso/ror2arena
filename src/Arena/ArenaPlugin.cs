@@ -13,6 +13,8 @@ public class ArenaPlugin : BaseUnityPlugin
     public const string PluginName = "Arena";
     public const string PluginVersion = "0.0.1";
 
+    private static ArenaManager.Teleporter Teleporter = new();
+
     public void Awake()
     {
         Log.Init(Logger);
@@ -59,7 +61,7 @@ public class ArenaPlugin : BaseUnityPlugin
 
         ArenaManager.Clock.Pause();
         ArenaManager.FriendlyFire.Enable();
-        ArenaManager.Teleporter.Disable();
+        Teleporter.Disable();
 
         On.RoR2.CharacterBody.OnDeathStart += CharacterBody_OnDeathStart;
     }
@@ -89,7 +91,7 @@ public class ArenaPlugin : BaseUnityPlugin
         {
             On.RoR2.CharacterBody.OnDeathStart -= CharacterBody_OnDeathStart;
 
-            ArenaManager.Teleporter.Enable();
+            Teleporter.Enable();
 
             ChatMessage.Send($"Good people, we have a winner! All hail the combatant, {championName}! Champion, leave the Arena now and rest! You've earned it!");
         }
