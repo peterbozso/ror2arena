@@ -6,10 +6,7 @@ internal static class Log
 {
     internal static ManualLogSource _logSource;
 
-    internal static void Init(ManualLogSource logSource)
-    {
-        _logSource = logSource;
-    }
+    internal static void Init(ManualLogSource logSource) => _logSource = logSource;
 
     internal static void LogDebug(object data) => _logSource.LogDebug(data);
     internal static void LogError(object data) => _logSource.LogError(data);
