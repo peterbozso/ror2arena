@@ -26,18 +26,20 @@ public class ArenaPlugin : BaseUnityPlugin
         On.RoR2.Run.OnDestroy += Run_OnDestroy;
     }
 
-    private void Run_OnDestroy(On.RoR2.Run.orig_OnDestroy orig, Run self)
-    {
-        orig(self);
-
-        TeleporterInteraction.onTeleporterChargedGlobal += TeleporterInteraction_onTeleporterChargedGlobal;
-    }
-
     private void Run_Awake(On.RoR2.Run.orig_Awake orig, Run self)
     {
         orig(self);
 
+        TeleporterInteraction.onTeleporterChargedGlobal += TeleporterInteraction_onTeleporterChargedGlobal;
+        TeleporterInteraction.onTeleporterFinishGlobal += TeleporterInteraction_onTeleporterFinishGlobal;
+    }
+
+    private void Run_OnDestroy(On.RoR2.Run.orig_OnDestroy orig, Run self)
+    {
+        orig(self);
+
         TeleporterInteraction.onTeleporterChargedGlobal -= TeleporterInteraction_onTeleporterChargedGlobal;
+        TeleporterInteraction.onTeleporterFinishGlobal -= TeleporterInteraction_onTeleporterFinishGlobal;
     }
 
     private void TeleporterInteraction_onTeleporterChargedGlobal(TeleporterInteraction tpi)
@@ -47,6 +49,12 @@ public class ArenaPlugin : BaseUnityPlugin
         ArenaManager.Clock.Pause();
         ArenaManager.FriendlyFire.Enable();
         ArenaManager.Teleporter.Disable();
+    }
+
+    private void TeleporterInteraction_onTeleporterFinishGlobal(TeleporterInteraction obj)
+    {
+        ArenaManager.Clock.Resume();
+        ArenaManager.FriendlyFire.Disable();
     }
 
     // The Update() method is run on every frame of the game.
@@ -59,9 +67,7 @@ public class ArenaPlugin : BaseUnityPlugin
         }
         else if (Input.GetKeyDown(KeyCode.F10))
         {
-            // TODO: Do these automatically when there's only one player remaining:
-            ArenaManager.Clock.Resume();
-            ArenaManager.FriendlyFire.Disable();
+            // TODO: Do this automatically - alongside an announcement - when there's only one player remaining:
             ArenaManager.Teleporter.Enable();
         }
 #endif
