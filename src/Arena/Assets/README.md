@@ -1,5 +1,5 @@
 # Arena
 
-Fight your friends at the end of each stage in the Arena!
+This mod is multiplayer-only. It won't do anything in a single-player run.
 
 ## Changelog

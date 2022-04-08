@@ -19,6 +19,8 @@ public class ArenaPlugin : BaseUnityPlugin
     private readonly FriendlyFire _friendlyFire = new();
     private readonly Portals _portals = new();
 
+    private bool _isEventInProgress;
+
     public void Awake()
     {
         Log.Init(Logger);
@@ -69,6 +71,7 @@ public class ArenaPlugin : BaseUnityPlugin
 
         On.RoR2.CharacterBody.OnDeathStart += CharacterBody_OnDeathStart;
 
+        _isEventInProgress = true;
         Log.LogMessage("Arena event started.");
     }
 
@@ -76,10 +79,14 @@ public class ArenaPlugin : BaseUnityPlugin
     {
         orig(self);
 
-        _clock.Resume();
-        _friendlyFire.Disable();
+        if (_isEventInProgress)
+        {
+            _clock.Resume();
+            _friendlyFire.Disable();
 
-        Log.LogMessage("Arena event ended.");
+            _isEventInProgress = false;
+            Log.LogMessage("Arena event ended.");
+        }
     }
 
     private void CharacterBody_OnDeathStart(On.RoR2.CharacterBody.orig_OnDeathStart orig, CharacterBody self)
