@@ -32,6 +32,8 @@ public class ArenaPlugin : BaseUnityPlugin
 
         TeleporterInteraction.onTeleporterChargedGlobal += TeleporterInteraction_onTeleporterChargedGlobal;
         TeleporterInteraction.onTeleporterFinishGlobal += TeleporterInteraction_onTeleporterFinishGlobal;
+
+        Log.LogMessage("Arena hooked.");
     }
 
     private void Run_OnDestroy(On.RoR2.Run.orig_OnDestroy orig, Run self)
@@ -40,6 +42,8 @@ public class ArenaPlugin : BaseUnityPlugin
 
         TeleporterInteraction.onTeleporterChargedGlobal -= TeleporterInteraction_onTeleporterChargedGlobal;
         TeleporterInteraction.onTeleporterFinishGlobal -= TeleporterInteraction_onTeleporterFinishGlobal;
+
+        Log.LogMessage("Arena unhooked.");
     }
 
     private void TeleporterInteraction_onTeleporterChargedGlobal(TeleporterInteraction tpi)
