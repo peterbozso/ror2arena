@@ -63,10 +63,6 @@ public class ArenaPlugin : BaseUnityPlugin
 #if DEBUG
         if (Input.GetKeyDown(KeyCode.F11))
         {
-            DebugMode.Enable();
-        }
-        else if (Input.GetKeyDown(KeyCode.F10))
-        {
             // TODO: Do this automatically - alongside an announcement - when there's only one player remaining:
             ArenaManager.Teleporter.Enable();
         }
