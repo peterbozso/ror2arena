@@ -24,7 +24,8 @@ public class Champion
     private static bool IsAlive(CharacterMaster player)
     {
         var body = player.GetBody();
-        return body && body.healthComponent.alive
+
+        return (body && body.healthComponent.alive)
             || player.inventory.GetItemCount(RoR2Content.Items.ExtraLife) > 0
             || player.inventory.GetItemCount(DLC1Content.Items.ExtraLifeVoid) > 0;
     }
