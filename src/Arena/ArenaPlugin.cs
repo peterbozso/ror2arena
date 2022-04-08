@@ -34,7 +34,7 @@ public class ArenaPlugin : BaseUnityPlugin
         orig(self);
 
         TeleporterInteraction.onTeleporterChargedGlobal += TeleporterInteraction_onTeleporterChargedGlobal;
-        TeleporterInteraction.onTeleporterFinishGlobal += TeleporterInteraction_onTeleporterFinishGlobal;
+        On.RoR2.Stage.Start += Stage_Start;
 
         Log.LogMessage("Arena hooked.");
     }
@@ -44,7 +44,7 @@ public class ArenaPlugin : BaseUnityPlugin
         orig(self);
 
         TeleporterInteraction.onTeleporterChargedGlobal -= TeleporterInteraction_onTeleporterChargedGlobal;
-        TeleporterInteraction.onTeleporterFinishGlobal -= TeleporterInteraction_onTeleporterFinishGlobal;
+        On.RoR2.Stage.Start -= Stage_Start;
 
         Log.LogMessage("Arena unhooked.");
     }
@@ -66,8 +66,10 @@ public class ArenaPlugin : BaseUnityPlugin
         On.RoR2.CharacterBody.OnDeathStart += CharacterBody_OnDeathStart;
     }
 
-    private void TeleporterInteraction_onTeleporterFinishGlobal(TeleporterInteraction obj)
+    private void Stage_Start(On.RoR2.Stage.orig_Start orig, Stage self)
     {
+        orig(self);
+
         ArenaManager.Clock.Resume();
         ArenaManager.FriendlyFire.Disable();
     }
