@@ -1,7 +1,5 @@
-﻿using MonoMod.RuntimeDetour;
-using RoR2;
+﻿using RoR2;
 using System.Linq;
-using System.Reflection;
 
 namespace Arena;
 
@@ -34,51 +32,6 @@ internal static class ArenaManager
         {
             RunArtifactManager.instance.SetArtifactEnabledServer(RoR2Content.Artifacts.FriendlyFire, false);
             Log.LogMessage("Friendly fire disabled.");
-        }
-    }
-
-    public class Teleporter
-    {
-        public delegate Interactability orig_GetInteractability(GenericInteraction self, Interactor activator);
-        public Hook hook_GetInteractability;
-
-        public void Disable()
-        {
-            On.RoR2.TeleporterInteraction.GetInteractability += TeleporterInteraction_GetInteractability;
-
-            hook_GetInteractability = new Hook(typeof(GenericInteraction).GetMethod("RoR2.IInteractable.GetInteractability", BindingFlags.NonPublic | BindingFlags.Instance), typeof(Teleporter).GetMethod("GenericInteraction_GetInteractability"), this, new HookConfig());
-
-            Log.LogMessage("Portals disabled.");
-        }
-
-        public void Enable()
-        {
-            On.RoR2.TeleporterInteraction.GetInteractability -= TeleporterInteraction_GetInteractability;
-            hook_GetInteractability.Dispose();
-            Log.LogMessage("Portals enabled.");
-        }
-
-        private static Interactability TeleporterInteraction_GetInteractability(
-            On.RoR2.TeleporterInteraction.orig_GetInteractability orig,
-            TeleporterInteraction self,
-            Interactor activator) =>
-                Interactability.ConditionsNotMet;
-
-        public Interactability GenericInteraction_GetInteractability(
-            orig_GetInteractability orig,
-            GenericInteraction self,
-            Interactor activator)
-        {
-            var interactionName = self.name.ToLower();
-
-            Log.LogInfo("Interaction while portals are disabled: " + interactionName);
-
-            if (interactionName.Contains("portal"))
-            {
-                return Interactability.ConditionsNotMet;
-            }
-
-            return orig(self, activator);
         }
     }
 
