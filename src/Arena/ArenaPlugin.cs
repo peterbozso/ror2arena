@@ -91,10 +91,9 @@ public class ArenaPlugin : BaseUnityPlugin
 
     private void CharacterBody_OnDeathStart(On.RoR2.CharacterBody.orig_OnDeathStart orig, CharacterBody self)
     {
-        orig(self);
-
         if (!self.isPlayerControlled)
         {
+            orig(self);
             return;
         }
 
@@ -112,5 +111,7 @@ public class ArenaPlugin : BaseUnityPlugin
 
             ChatMessage.Send($"Good people, we have a winner! All hail the combatant, {championName}! Champion, leave the Arena now and rest! You've earned it!");
         }
+
+        orig(self);
     }
 }
