@@ -40,7 +40,7 @@ public class ArenaPlugin : BaseUnityPlugin
         orig(self);
 
         TeleporterInteraction.onTeleporterChargedGlobal += TeleporterInteraction_onTeleporterChargedGlobal;
-        On.RoR2.Stage.Start += Stage_Start;
+        On.RoR2.Run.AdvanceStage += Run_AdvanceStage;
 
         Log.LogMessage("Arena plugin hooked.");
     }
@@ -50,7 +50,7 @@ public class ArenaPlugin : BaseUnityPlugin
         orig(self);
 
         TeleporterInteraction.onTeleporterChargedGlobal -= TeleporterInteraction_onTeleporterChargedGlobal;
-        On.RoR2.Stage.Start -= Stage_Start;
+        On.RoR2.Run.AdvanceStage -= Run_AdvanceStage;
 
         Log.LogMessage("Arena plugin unhooked.");
     }
@@ -75,10 +75,8 @@ public class ArenaPlugin : BaseUnityPlugin
         Log.LogMessage("Arena event started.");
     }
 
-    private void Stage_Start(On.RoR2.Stage.orig_Start orig, Stage self)
+    private void Run_AdvanceStage(On.RoR2.Run.orig_AdvanceStage orig, Run self, SceneDef nextScene)
     {
-        orig(self);
-
         if (_isEventInProgress)
         {
             _clock.Resume();
@@ -87,6 +85,8 @@ public class ArenaPlugin : BaseUnityPlugin
             _isEventInProgress = false;
             Log.LogMessage("Arena event ended.");
         }
+
+        orig(self, nextScene);
     }
 
     private void CharacterBody_OnDeathStart(On.RoR2.CharacterBody.orig_OnDeathStart orig, CharacterBody self)
