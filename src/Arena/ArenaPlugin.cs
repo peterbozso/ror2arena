@@ -85,7 +85,7 @@ public class ArenaPlugin : BaseUnityPlugin
 
             ArenaManager.Teleporter.Enable();
 
-            ChatMessage.Send($"Good people, we have a winner! All hail the combatant, {championName}! Victor, leave the Arena now and rest! You've earned it!");
+            ChatMessage.Send($"Good people, we have a winner! All hail the combatant, {championName}! Champion, leave the Arena now and rest! You've earned it!");
         }
     }
 }
