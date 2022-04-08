@@ -45,7 +45,7 @@ internal class Portals
     {
         var interactionName = self.name.ToLower();
 
-        Log.LogInfo("Interaction while portals are disabled: " + interactionName);
+        Log.LogDebug("Interaction while portals are disabled: " + interactionName);
 
         if (interactionName.Contains("portal"))
         {
