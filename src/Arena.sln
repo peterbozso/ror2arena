@@ -5,6 +5,7 @@ VisualStudioVersion = 17.1.32328.378
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Assets", "Assets", "{3A26DDA8-2697-4D64-962B-DB9E2DC00EF6}"
 	ProjectSection(SolutionItems) = preProject
+		Assets\icon.png = Assets\icon.png
 		Assets\manifest.json = Assets\manifest.json
 		Assets\README.md = Assets\README.md
 	EndProjectSection
