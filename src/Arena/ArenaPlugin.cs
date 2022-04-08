@@ -49,6 +49,12 @@ public class ArenaPlugin : BaseUnityPlugin
 
     private void TeleporterInteraction_onTeleporterChargedGlobal(TeleporterInteraction tpi)
     {
+        if (ArenaManager.Champion.Name != string.Empty)
+        {
+            Log.LogMessage("Only one player alive. Not starting the event.");
+            return;
+        }
+
         ChatMessage.Send("Good people of the Imperial City, welcome to the Arena!");
 
         ArenaManager.Clock.Pause();
