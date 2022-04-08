@@ -38,6 +38,7 @@ internal static class ArenaManager
     {
         public static void Disable()
         {
+            // TODO: What about blue/gold/etc. portals?
             On.RoR2.TeleporterInteraction.GetInteractability += TeleporterInteraction_GetInteractability;
             Log.LogMessage("Teleporter disabled.");
         }
