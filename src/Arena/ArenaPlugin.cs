@@ -12,7 +12,7 @@ public class ArenaPlugin : BaseUnityPlugin
     public const string PluginGUID = PluginAuthor + "." + PluginName;
     public const string PluginAuthor = "peterbozso";
     public const string PluginName = "Arena";
-    public const string PluginVersion = "0.0.1";
+    public const string PluginVersion = "0.1.0";
 
     private readonly Champion _champion = new();
     private readonly Clock _clock = new();

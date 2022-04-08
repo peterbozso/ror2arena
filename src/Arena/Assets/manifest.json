@@ -1,6 +1,6 @@
 ﻿{
 	"name": "Arena",
-	"version_number": "0.0.1",
+	"version_number": "0.1.0",
 	"website_url": "https://github.com/peterbozso/ror2arena",
 	"description": "Fight your friends at the end of each stage in the Arena!",
 	"dependencies": [
