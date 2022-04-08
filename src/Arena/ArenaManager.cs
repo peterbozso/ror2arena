@@ -64,13 +64,11 @@ internal static class ArenaManager
             get
             {
                 var players = PlayerCharacterMasterController.instances;
-                var aliveCount = players.Count(player => IsAlive(player.master));
+                var alivePlayers = players.Where(player => IsAlive(player.master)).ToArray();
 
-                if (aliveCount == 1)
+                if (alivePlayers.Length == 1)
                 {
-                    return players
-                        .First(player => IsAlive(player.master))
-                        .master.GetBody().GetUserName();
+                    return alivePlayers[0].master.GetBody().GetUserName();
                 }
 
                 return string.Empty;
