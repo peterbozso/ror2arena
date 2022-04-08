@@ -1,7 +1,6 @@
 ﻿using BepInEx;
 using R2API.Utils;
 using RoR2;
-using UnityEngine;
 
 namespace Arena;
 
@@ -18,6 +17,7 @@ public class ArenaPlugin : BaseUnityPlugin
     {
         Log.Init(Logger);
 
+        // TODO: Unsubscribe from these on destroy:
         On.RoR2.Run.Awake += Run_Awake;
         On.RoR2.Run.OnDestroy += Run_OnDestroy;
     }
@@ -49,6 +49,8 @@ public class ArenaPlugin : BaseUnityPlugin
         ArenaManager.Clock.Pause();
         ArenaManager.FriendlyFire.Enable();
         ArenaManager.Teleporter.Disable();
+
+        On.RoR2.CharacterBody.OnDeathStart += CharacterBody_OnDeathStart;
     }
 
     private void TeleporterInteraction_onTeleporterFinishGlobal(TeleporterInteraction obj)
@@ -57,14 +59,24 @@ public class ArenaPlugin : BaseUnityPlugin
         ArenaManager.FriendlyFire.Disable();
     }
 
-    private void Update()
+    private void CharacterBody_OnDeathStart(On.RoR2.CharacterBody.orig_OnDeathStart orig, CharacterBody self)
     {
-#if DEBUG
-        if (Input.GetKeyDown(KeyCode.F11))
+        orig(self);
+
+        if (!self.isPlayerControlled)
         {
-            // TODO: Do this automatically - alongside an announcement - when there's only one player remaining:
-            ArenaManager.Teleporter.Enable();
+            return;
         }
-#endif
+
+        Log.LogMessage(ArenaManager.Graveyard.IsAllDead
+            ? "Only the Champion is alive."
+            : "There are multiple fighters alive.");
+
+        if (ArenaManager.Graveyard.IsAllDead)
+        {
+            ArenaManager.Teleporter.Enable();
+
+            On.RoR2.CharacterBody.OnDeathStart -= CharacterBody_OnDeathStart;
+        }
     }
 }

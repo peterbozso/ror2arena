@@ -1,4 +1,5 @@
 ﻿using RoR2;
+using System.Linq;
 
 namespace Arena;
 
@@ -54,5 +55,26 @@ internal static class ArenaManager
             TeleporterInteraction self,
             Interactor activator) =>
                 Interactability.ConditionsNotMet;
+    }
+
+    public static class Graveyard
+    {
+        public static bool IsAllDead
+        {
+            get
+            {
+                var players = PlayerCharacterMasterController.instances;
+                var aliveCount = players.Count(player => IsAlive(player.master));
+                return aliveCount == 1;
+            }
+        }
+
+        private static bool IsAlive(CharacterMaster player)
+        {
+            var body = player.GetBody();
+            return (body && body.healthComponent.alive)
+                || player.inventory.GetItemCount(RoR2Content.Items.ExtraLife) > 0
+                || player.inventory.GetItemCount(DLC1Content.Items.ExtraLifeVoid) > 0;
+        }
     }
 }
