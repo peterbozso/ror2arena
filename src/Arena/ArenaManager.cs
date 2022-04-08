@@ -59,16 +59,6 @@ internal static class ArenaManager
 
     public static class Champion
     {
-        public static bool IsAllDead
-        {
-            get
-            {
-                var players = PlayerCharacterMasterController.instances;
-                var aliveCount = players.Count(player => IsAlive(player.master));
-                return aliveCount == 1;
-            }
-        }
-
         public static string Name
         {
             get
