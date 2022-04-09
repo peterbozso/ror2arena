@@ -5,10 +5,10 @@ namespace Arena.Managers;
 
 internal class ArenaManager
 {
-    private readonly ChampionManager _championManager = new();
     private readonly ClockManager _clockManager = new();
     private readonly FriendlyFireManager _friendlyFireManager = new();
     private readonly PortalManager _portalManager = new();
+    private readonly DeathManager _deathManager = new();
 
     private bool _isEventInProgress;
 
@@ -26,7 +26,7 @@ internal class ArenaManager
 
     private void TeleporterInteraction_onTeleporterChargedGlobal(TeleporterInteraction tpi)
     {
-        if (_championManager.Name != string.Empty)
+        if (_deathManager.IsSinglePlayer)
         {
             Log.LogMessage("Only one player is alive. Not starting the event.");
             return;
@@ -37,11 +37,17 @@ internal class ArenaManager
         _clockManager.Pause();
         _friendlyFireManager.Enable();
         _portalManager.Disable();
-
-        On.RoR2.CharacterBody.OnDeathStart += CharacterBody_OnDeathStart;
+        _deathManager.Start(AllPlayersDead);
 
         _isEventInProgress = true;
         Log.LogMessage("Arena event started.");
+    }
+
+    private void AllPlayersDead(string championName)
+    {
+        _portalManager.Enable();
+
+        ChatMessage.Send($"Good people, we have a winner! All hail the combatant, {championName}! Champion, leave the Arena now and rest! You've earned it!");
     }
 
     private void Run_AdvanceStage(On.RoR2.Run.orig_AdvanceStage orig, Run self, SceneDef nextScene)
@@ -56,31 +62,5 @@ internal class ArenaManager
         }
 
         orig(self, nextScene);
-    }
-
-    private void CharacterBody_OnDeathStart(On.RoR2.CharacterBody.orig_OnDeathStart orig, CharacterBody self)
-    {
-        if (!self.isPlayerControlled)
-        {
-            orig(self);
-            return;
-        }
-
-        var championName = _championManager.Name;
-
-        Log.LogMessage(championName == string.Empty
-            ? "There are still multiple fighters alive."
-            : "Only the Champion is alive: " + championName);
-
-        if (championName != string.Empty)
-        {
-            On.RoR2.CharacterBody.OnDeathStart -= CharacterBody_OnDeathStart;
-
-            _portalManager.Enable();
-
-            ChatMessage.Send($"Good people, we have a winner! All hail the combatant, {championName}! Champion, leave the Arena now and rest! You've earned it!");
-        }
-
-        orig(self);
     }
 }
