@@ -12,13 +12,13 @@ internal class PortalManager
 
     public void DisableAllPortals()
     {
-        On.RoR2.TeleporterInteraction.GetInteractability += TeleporterInteraction_GetInteractability;
+        On.RoR2.TeleporterInteraction.GetInteractability += OnTeleporterInteractionGetInteractability;
 
         _hook_GetInteractability = new Hook(
             typeof(GenericInteraction).GetMethod(
                 "RoR2.IInteractable.GetInteractability",
                 BindingFlags.NonPublic | BindingFlags.Instance),
-            typeof(PortalManager).GetMethod("GenericInteraction_GetInteractability"),
+            typeof(PortalManager).GetMethod("OnGenericInteractionGetInteractability"),
             this,
             new HookConfig());
 
@@ -27,18 +27,20 @@ internal class PortalManager
 
     public void EnableAllPortals()
     {
-        On.RoR2.TeleporterInteraction.GetInteractability -= TeleporterInteraction_GetInteractability;
+        On.RoR2.TeleporterInteraction.GetInteractability -= OnTeleporterInteractionGetInteractability;
+
         _hook_GetInteractability.Dispose();
+
         Log.LogMessage("Portals enabled.");
     }
 
-    private static Interactability TeleporterInteraction_GetInteractability(
+    private static Interactability OnTeleporterInteractionGetInteractability(
         On.RoR2.TeleporterInteraction.orig_GetInteractability orig,
         TeleporterInteraction self,
         Interactor activator) =>
             Interactability.ConditionsNotMet;
 
-    public Interactability GenericInteraction_GetInteractability(
+    public Interactability OnGenericInteractionGetInteractability(
         orig_GetInteractability orig,
         GenericInteraction self,
         Interactor activator)
