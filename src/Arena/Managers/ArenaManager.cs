@@ -5,10 +5,10 @@ namespace Arena.Managers;
 
 internal class ArenaManager
 {
-    private readonly Champion _champion = new();
-    private readonly Clock _clock = new();
-    private readonly FriendlyFire _friendlyFire = new();
-    private readonly Portals _portals = new();
+    private readonly ChampionManager _championManager = new();
+    private readonly ClockManager _clockManager = new();
+    private readonly FriendlyFireManager _friendlyFireManager = new();
+    private readonly PortalManager _portalManager = new();
 
     private bool _isEventInProgress;
 
@@ -26,7 +26,7 @@ internal class ArenaManager
 
     private void TeleporterInteraction_onTeleporterChargedGlobal(TeleporterInteraction tpi)
     {
-        if (_champion.Name != string.Empty)
+        if (_championManager.Name != string.Empty)
         {
             Log.LogMessage("Only one player is alive. Not starting the event.");
             return;
@@ -34,9 +34,9 @@ internal class ArenaManager
 
         ChatMessage.Send("Good people of the Imperial City, welcome to the Arena!");
 
-        _clock.Pause();
-        _friendlyFire.Enable();
-        _portals.Disable();
+        _clockManager.Pause();
+        _friendlyFireManager.Enable();
+        _portalManager.Disable();
 
         On.RoR2.CharacterBody.OnDeathStart += CharacterBody_OnDeathStart;
 
@@ -48,8 +48,8 @@ internal class ArenaManager
     {
         if (_isEventInProgress)
         {
-            _clock.Resume();
-            _friendlyFire.Disable();
+            _clockManager.Resume();
+            _friendlyFireManager.Disable();
 
             _isEventInProgress = false;
             Log.LogMessage("Arena event ended.");
@@ -66,7 +66,7 @@ internal class ArenaManager
             return;
         }
 
-        var championName = _champion.Name;
+        var championName = _championManager.Name;
 
         Log.LogMessage(championName == string.Empty
             ? "There are still multiple fighters alive."
@@ -76,7 +76,7 @@ internal class ArenaManager
         {
             On.RoR2.CharacterBody.OnDeathStart -= CharacterBody_OnDeathStart;
 
-            _portals.Enable();
+            _portalManager.Enable();
 
             ChatMessage.Send($"Good people, we have a winner! All hail the combatant, {championName}! Champion, leave the Arena now and rest! You've earned it!");
         }

@@ -4,7 +4,7 @@ using System.Reflection;
 
 namespace Arena.Managers;
 
-internal class Portals
+internal class PortalManager
 {
     public delegate Interactability orig_GetInteractability(GenericInteraction self, Interactor activator);
 
@@ -18,7 +18,7 @@ internal class Portals
             typeof(GenericInteraction).GetMethod(
                 "RoR2.IInteractable.GetInteractability",
                 BindingFlags.NonPublic | BindingFlags.Instance),
-            typeof(Portals).GetMethod("GenericInteraction_GetInteractability"),
+            typeof(PortalManager).GetMethod("GenericInteraction_GetInteractability"),
             this,
             new HookConfig());
 

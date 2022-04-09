@@ -2,7 +2,7 @@
 
 namespace Arena.Managers;
 
-public class FriendlyFire
+public class FriendlyFireManager
 {
     public void Enable()
     {
