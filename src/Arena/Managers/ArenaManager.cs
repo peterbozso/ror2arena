@@ -28,7 +28,7 @@ internal class ArenaManager
     {
         if (_champion.Name != string.Empty)
         {
-            Log.LogMessage("Only one player alive. Not starting the event.");
+            Log.LogMessage("Only one player is alive. Not starting the event.");
             return;
         }
 
