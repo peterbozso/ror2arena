@@ -14,17 +14,17 @@ internal class ArenaManager
 
     public void Start()
     {
-        TeleporterInteraction.onTeleporterChargedGlobal += TeleporterInteraction_onTeleporterChargedGlobal;
-        On.RoR2.Run.AdvanceStage += Run_AdvanceStage;
+        TeleporterInteraction.onTeleporterChargedGlobal += OnTeleporterCharged;
+        On.RoR2.Run.AdvanceStage += OnAdvanceStage;
     }
 
     public void Stop()
     {
-        TeleporterInteraction.onTeleporterChargedGlobal -= TeleporterInteraction_onTeleporterChargedGlobal;
-        On.RoR2.Run.AdvanceStage -= Run_AdvanceStage;
+        TeleporterInteraction.onTeleporterChargedGlobal -= OnTeleporterCharged;
+        On.RoR2.Run.AdvanceStage -= OnAdvanceStage;
     }
 
-    private void TeleporterInteraction_onTeleporterChargedGlobal(TeleporterInteraction tpi)
+    private void OnTeleporterCharged(TeleporterInteraction tpi)
     {
         if (_deathManager.IsSinglePlayer)
         {
@@ -37,20 +37,20 @@ internal class ArenaManager
         _clockManager.Pause();
         _friendlyFireManager.Enable();
         _portalManager.Disable();
-        _deathManager.Start(AllPlayersDead);
+        _deathManager.Start(OnAllPlayersDead);
 
         _isEventInProgress = true;
         Log.LogMessage("Arena event started.");
     }
 
-    private void AllPlayersDead(string championName)
+    private void OnAllPlayersDead(string championName)
     {
         _portalManager.Enable();
 
         ChatMessage.Send($"Good people, we have a winner! All hail the combatant, {championName}! Champion, leave the Arena now and rest! You've earned it!");
     }
 
-    private void Run_AdvanceStage(On.RoR2.Run.orig_AdvanceStage orig, Run self, SceneDef nextScene)
+    private void OnAdvanceStage(On.RoR2.Run.orig_AdvanceStage orig, Run self, SceneDef nextScene)
     {
         if (_isEventInProgress)
         {

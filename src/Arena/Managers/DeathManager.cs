@@ -6,20 +6,20 @@ namespace Arena.Managers;
 internal class DeathManager
 {
     private readonly ChampionManager _championManager = new();
-    private Action<string> _allPlayersDeadCallback;
+    private Action<string> _onAllPlayersDead;
 
     public bool IsSinglePlayer => _championManager.Name != string.Empty;
 
-    public void Start(Action<string> allPlayersDeadCallback)
+    public void Start(Action<string> onAllPlayersDead)
     {
-        _allPlayersDeadCallback = allPlayersDeadCallback;
+        _onAllPlayersDead = onAllPlayersDead;
         On.RoR2.CharacterBody.OnDeathStart += CharacterBody_OnDeathStart;
     }
 
     private void Stop()
     {
         On.RoR2.CharacterBody.OnDeathStart -= CharacterBody_OnDeathStart;
-        _allPlayersDeadCallback(_championManager.Name);
+        _onAllPlayersDead(_championManager.Name);
     }
 
     private void CharacterBody_OnDeathStart(On.RoR2.CharacterBody.orig_OnDeathStart orig, CharacterBody self)
