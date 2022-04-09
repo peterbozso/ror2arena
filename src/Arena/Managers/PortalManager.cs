@@ -10,7 +10,7 @@ internal class PortalManager
 
     private Hook _hook_GetInteractability;
 
-    public void Disable()
+    public void DisableAllPortals()
     {
         On.RoR2.TeleporterInteraction.GetInteractability += TeleporterInteraction_GetInteractability;
 
@@ -25,7 +25,7 @@ internal class PortalManager
         Log.LogMessage("Portals disabled.");
     }
 
-    public void Enable()
+    public void EnableAllPortals()
     {
         On.RoR2.TeleporterInteraction.GetInteractability -= TeleporterInteraction_GetInteractability;
         _hook_GetInteractability.Dispose();

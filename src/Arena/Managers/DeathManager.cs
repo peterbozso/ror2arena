@@ -9,7 +9,7 @@ internal class DeathManager
 
     private Action<string> _onAllPlayersDead;
 
-    public bool IsSinglePlayer => _championManager.Name != string.Empty;
+    public bool IsSinglePlayer => _championManager.ChampionName != string.Empty;
 
     public void Start(Action<string> onAllPlayersDead)
     {
@@ -20,7 +20,7 @@ internal class DeathManager
     private void Stop()
     {
         On.RoR2.CharacterBody.OnDeathStart -= OnDeathStart;
-        _onAllPlayersDead(_championManager.Name);
+        _onAllPlayersDead(_championManager.ChampionName);
     }
 
     private void OnDeathStart(On.RoR2.CharacterBody.orig_OnDeathStart orig, CharacterBody self)
@@ -31,7 +31,7 @@ internal class DeathManager
             return;
         }
 
-        var championName = _championManager.Name;
+        var championName = _championManager.ChampionName;
 
         Log.LogMessage(championName == string.Empty
             ? "There are still multiple fighters alive."

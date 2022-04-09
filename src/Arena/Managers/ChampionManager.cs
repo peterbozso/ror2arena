@@ -5,7 +5,7 @@ namespace Arena.Managers;
 
 public class ChampionManager
 {
-    public string Name
+    public string ChampionName
     {
         get
         {

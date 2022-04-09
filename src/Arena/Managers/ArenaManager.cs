@@ -34,9 +34,9 @@ internal class ArenaManager
 
         ChatMessage.Send("Good people of the Imperial City, welcome to the Arena!");
 
-        _clockManager.Pause();
-        _friendlyFireManager.Enable();
-        _portalManager.Disable();
+        _clockManager.PauseClock();
+        _friendlyFireManager.EnableFriendlyFire();
+        _portalManager.DisableAllPortals();
         _deathManager.Start(OnAllPlayersDead);
 
         _isEventInProgress = true;
@@ -45,7 +45,7 @@ internal class ArenaManager
 
     private void OnAllPlayersDead(string championName)
     {
-        _portalManager.Enable();
+        _portalManager.EnableAllPortals();
 
         ChatMessage.Send($"Good people, we have a winner! All hail the combatant, {championName}! Champion, leave the Arena now and rest! You've earned it!");
     }
@@ -54,8 +54,8 @@ internal class ArenaManager
     {
         if (_isEventInProgress)
         {
-            _clockManager.Resume();
-            _friendlyFireManager.Disable();
+            _clockManager.ResumeClock();
+            _friendlyFireManager.DisableFriendlyFire();
 
             _isEventInProgress = false;
             Log.LogMessage("Arena event ended.");
