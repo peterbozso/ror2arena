@@ -6,6 +6,7 @@ namespace Arena.Managers;
 internal class DeathManager
 {
     private readonly ChampionManager _championManager = new();
+    private readonly ItemManager _itemManager = new();
 
     private Action<string> _onAllPlayersDead;
 
@@ -31,15 +32,18 @@ internal class DeathManager
             return;
         }
 
-        var championName = _championManager.ChampionName;
+        _itemManager.DropRandomItem(self.master);
 
-        Log.LogMessage(championName == string.Empty
-            ? "There are still multiple fighters alive."
-            : "Only the Champion is alive: " + championName);
+        var championName = _championManager.ChampionName;
 
         if (championName != string.Empty)
         {
+            Log.LogMessage("Only the Champion is alive: " + championName);
             Stop();
+        }
+        else
+        {
+            Log.LogMessage("There are still multiple fighters alive.");
         }
 
         orig(self);
