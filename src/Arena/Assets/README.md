@@ -14,6 +14,11 @@ In order to progress the game, the players need to kill each other. The last man
 
 ## Changelog
 
+### 0.1.1
+
+* Add missing dependency on R2API.
+* Fix Arena event starting with only one survivor being alive, causing run to stuck.
+
 ### 0.1.0
 
 * Initial release.
