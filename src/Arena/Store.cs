@@ -16,8 +16,12 @@ internal class Store
         }
         else
         {
+            var managerType = typeof(T);
             var manager = new T();
-            _managers.Value.Add(typeof(T), manager);
+            _managers.Value.Add(managerType, manager);
+
+            Log.LogDebug($"Created: {managerType.Name}");
+
             return manager;
         }
     }
@@ -28,6 +32,8 @@ internal class Store
         {
             manager.Destroy();
         }
+
+        Log.LogDebug($"Destroyed managers count: {_managers.Value.Count}");
 
         _managers.Value.Clear();
     }

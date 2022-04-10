@@ -19,12 +19,16 @@ public class ArenaPlugin : BaseUnityPlugin
 
         On.RoR2.Run.Awake += OnRunAwake;
         On.RoR2.Run.OnDestroy += OnRunOnDestroy;
+
+        Log.LogDebug($"{nameof(ArenaPlugin)} hooked.");
     }
 
     public void OnDestroy()
     {
         On.RoR2.Run.Awake -= OnRunAwake;
         On.RoR2.Run.OnDestroy -= OnRunOnDestroy;
+
+        Log.LogDebug($"{nameof(ArenaPlugin)} unhooked.");
     }
 
     private void OnRunAwake(On.RoR2.Run.orig_Awake orig, Run self)
@@ -32,7 +36,8 @@ public class ArenaPlugin : BaseUnityPlugin
         orig(self);
 
         Store.Get<ArenaManager>().Start();
-        Log.LogMessage("Arena plugin hooked.");
+
+        Log.LogDebug("Run started.");
     }
 
     private void OnRunOnDestroy(On.RoR2.Run.orig_OnDestroy orig, Run self)
@@ -40,6 +45,7 @@ public class ArenaPlugin : BaseUnityPlugin
         orig(self);
 
         Store.DestroyAll();
-        Log.LogMessage("Arena plugin unhooked.");
+
+        Log.LogDebug("Run ended.");
     }
 }

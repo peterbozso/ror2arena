@@ -15,9 +15,16 @@ internal class DeathManager : ManagerBase
     {
         _onAllPlayersDead = onAllPlayersDead;
         On.RoR2.CharacterBody.OnDeathStart += OnDeathStart;
+
+        Log.LogDebug($"{nameof(DeathManager)} started.");
     }
 
-    private void Stop() => On.RoR2.CharacterBody.OnDeathStart -= OnDeathStart;
+    private void Stop()
+    {
+        On.RoR2.CharacterBody.OnDeathStart -= OnDeathStart;
+
+        Log.LogDebug($"{nameof(DeathManager)} stopped.");
+    }
 
     private void OnDeathStart(On.RoR2.CharacterBody.orig_OnDeathStart orig, CharacterBody self)
     {
@@ -33,13 +40,14 @@ internal class DeathManager : ManagerBase
 
         if (championName != string.Empty)
         {
-            Log.LogMessage("Only the Champion is alive: " + championName);
+            Log.LogDebug("All other players died, only the Champion is alive: " + championName);
+
             Stop();
             _onAllPlayersDead(Store.Get<ChampionManager>().ChampionName);
         }
         else
         {
-            Log.LogMessage("There are still multiple fighters alive.");
+            Log.LogDebug("There are still multiple fighters alive.");
         }
 
         orig(self);

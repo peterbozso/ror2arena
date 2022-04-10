@@ -24,7 +24,7 @@ internal class PortalManager : ManagerBase
             this,
             new HookConfig());
 
-        Log.LogMessage("Portals disabled.");
+        Log.LogDebug("Portals disabled.");
     }
 
     public void EnableAllPortals()
@@ -33,7 +33,7 @@ internal class PortalManager : ManagerBase
 
         _hook_GetInteractability.Dispose();
 
-        Log.LogMessage("Portals enabled.");
+        Log.LogDebug("Portals enabled.");
     }
 
     private static Interactability OnTeleporterInteractionGetInteractability(
@@ -45,17 +45,8 @@ internal class PortalManager : ManagerBase
     public Interactability OnGenericInteractionGetInteractability(
         orig_GetInteractability orig,
         GenericInteraction self,
-        Interactor activator)
-    {
-        var interactionName = self.name.ToLower();
-
-        Log.LogDebug("Interaction while portals are disabled: " + interactionName);
-
-        if (interactionName.Contains("portal"))
-        {
-            return Interactability.ConditionsNotMet;
-        }
-
-        return orig(self, activator);
-    }
+        Interactor activator) =>
+            self.name.ToLower().Contains("portal")
+            ? Interactability.ConditionsNotMet
+            : orig(self, activator);
 }

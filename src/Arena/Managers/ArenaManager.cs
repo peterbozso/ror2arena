@@ -11,19 +11,23 @@ internal class ArenaManager : ManagerBase
     {
         TeleporterInteraction.onTeleporterChargedGlobal += OnTeleporterCharged;
         On.RoR2.Run.AdvanceStage += OnAdvanceStage;
+
+        Log.LogDebug($"{nameof(ArenaManager)} started.");
     }
 
     public override void Destroy()
     {
         TeleporterInteraction.onTeleporterChargedGlobal -= OnTeleporterCharged;
         On.RoR2.Run.AdvanceStage -= OnAdvanceStage;
+
+        Log.LogDebug($"{nameof(ArenaManager)} stopped.");
     }
 
     private void OnTeleporterCharged(TeleporterInteraction tpi)
     {
         if (Store.Get<DeathManager>().IsSinglePlayer)
         {
-            Log.LogMessage("Only one player is alive. Not starting the event.");
+            Log.LogDebug("Only one player is alive. Not starting the event.");
             return;
         }
 
@@ -35,7 +39,8 @@ internal class ArenaManager : ManagerBase
         Store.Get<DeathManager>().Start(OnAllPlayersDead);
 
         _isEventInProgress = true;
-        Log.LogMessage("Arena event started.");
+
+        Log.LogDebug("Arena event started.");
     }
 
     private void OnAllPlayersDead(string championName)
@@ -53,7 +58,8 @@ internal class ArenaManager : ManagerBase
             Store.Get<FriendlyFireManager>().DisableFriendlyFire();
 
             _isEventInProgress = false;
-            Log.LogMessage("Arena event ended.");
+
+            Log.LogDebug("Arena event ended.");
         }
 
         orig(self, nextScene);
