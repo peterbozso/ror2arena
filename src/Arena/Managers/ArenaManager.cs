@@ -7,20 +7,26 @@ internal class ArenaManager : ManagerBase
 {
     private bool _isEventInProgress;
 
-    public void Start()
+    public void WatchStage() => StartListening();
+
+    protected override void StartListening()
     {
         TeleporterInteraction.onTeleporterChargedGlobal += OnTeleporterCharged;
         On.RoR2.Run.AdvanceStage += OnAdvanceStage;
 
-        Log.LogDebug($"Started listening.");
+        Log.LogDebug($"Started watching stage events.");
+
+        base.StartListening();
     }
 
-    public override void Destroy()
+    protected override void StopListening()
     {
         TeleporterInteraction.onTeleporterChargedGlobal -= OnTeleporterCharged;
         On.RoR2.Run.AdvanceStage -= OnAdvanceStage;
 
-        Log.LogDebug($"Stopped listening.");
+        Log.LogDebug($"Stopped watching stage events.");
+
+        base.StopListening();
     }
 
     private void OnTeleporterCharged(TeleporterInteraction tpi)
@@ -36,7 +42,7 @@ internal class ArenaManager : ManagerBase
         Store.Get<ClockManager>().PauseClock();
         Store.Get<FriendlyFireManager>().EnableFriendlyFire();
         Store.Get<PortalManager>().DisableAllPortals();
-        Store.Get<DeathManager>().Start(OnAllPlayersDead);
+        Store.Get<DeathManager>().WatchDeaths(OnAllPlayersDead);
 
         _isEventInProgress = true;
 

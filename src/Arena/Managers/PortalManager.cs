@@ -10,9 +10,11 @@ internal class PortalManager : ManagerBase
 
     private Hook _hook_GetInteractability;
 
-    public override void Destroy() => EnableAllPortals();
+    public void DisableAllPortals() => StartListening();
 
-    public void DisableAllPortals()
+    public void EnableAllPortals() => StopListening();
+
+    protected override void StartListening()
     {
         On.RoR2.TeleporterInteraction.GetInteractability += OnTeleporterInteractionGetInteractability;
 
@@ -25,15 +27,19 @@ internal class PortalManager : ManagerBase
             new HookConfig());
 
         Log.LogDebug("Portals disabled.");
+
+        base.StartListening();
     }
 
-    public void EnableAllPortals()
+    protected override void StopListening()
     {
         On.RoR2.TeleporterInteraction.GetInteractability -= OnTeleporterInteractionGetInteractability;
 
         _hook_GetInteractability.Dispose();
 
         Log.LogDebug("Portals enabled.");
+
+        base.StopListening();
     }
 
     private static Interactability OnTeleporterInteractionGetInteractability(

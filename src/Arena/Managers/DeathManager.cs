@@ -9,21 +9,28 @@ internal class DeathManager : ManagerBase
 
     public bool IsSinglePlayer => Store.Get<ChampionManager>().ChampionName != string.Empty;
 
-    public override void Destroy() => Stop();
-
-    public void Start(Action<string> onAllPlayersDead)
+    public void WatchDeaths(Action<string> onAllPlayersDead)
     {
         _onAllPlayersDead = onAllPlayersDead;
-        On.RoR2.CharacterBody.OnDeathStart += OnDeathStart;
-
-        Log.LogDebug($"Started listening.");
+        StartListening();
     }
 
-    private void Stop()
+    protected override void StartListening()
+    {
+        On.RoR2.CharacterBody.OnDeathStart += OnDeathStart;
+
+        Log.LogDebug($"Started watching deaths.");
+
+        base.StartListening();
+    }
+
+    protected override void StopListening()
     {
         On.RoR2.CharacterBody.OnDeathStart -= OnDeathStart;
 
-        Log.LogDebug($"Stopped listening.");
+        Log.LogDebug($"Stopped watching deaths.");
+
+        base.StopListening();
     }
 
     private void OnDeathStart(On.RoR2.CharacterBody.orig_OnDeathStart orig, CharacterBody self)
@@ -42,7 +49,7 @@ internal class DeathManager : ManagerBase
         {
             Log.LogDebug("All other players died, only the Champion is alive: " + championName);
 
-            Stop();
+            StopListening();
             _onAllPlayersDead(Store.Get<ChampionManager>().ChampionName);
         }
         else
