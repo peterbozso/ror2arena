@@ -2,7 +2,7 @@
 
 namespace Arena.Managers;
 
-public class ClockManager
+internal class ClockManager : ManagerBase
 {
     public void PauseClock()
     {

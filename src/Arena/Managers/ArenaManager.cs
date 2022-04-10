@@ -3,13 +3,8 @@ using RoR2;
 
 namespace Arena.Managers;
 
-internal class ArenaManager
+internal class ArenaManager : ManagerBase
 {
-    private readonly ClockManager _clockManager = new();
-    private readonly FriendlyFireManager _friendlyFireManager = new();
-    private readonly PortalManager _portalManager = new();
-    private readonly DeathManager _deathManager = new();
-
     private bool _isEventInProgress;
 
     public void Start()
@@ -18,7 +13,7 @@ internal class ArenaManager
         On.RoR2.Run.AdvanceStage += OnAdvanceStage;
     }
 
-    public void Stop()
+    public override void Destroy()
     {
         TeleporterInteraction.onTeleporterChargedGlobal -= OnTeleporterCharged;
         On.RoR2.Run.AdvanceStage -= OnAdvanceStage;
@@ -26,7 +21,7 @@ internal class ArenaManager
 
     private void OnTeleporterCharged(TeleporterInteraction tpi)
     {
-        if (_deathManager.IsSinglePlayer)
+        if (Store.Get<DeathManager>().IsSinglePlayer)
         {
             Log.LogMessage("Only one player is alive. Not starting the event.");
             return;
@@ -34,10 +29,10 @@ internal class ArenaManager
 
         ChatMessage.Send("Good people of the Imperial City, welcome to the Arena!");
 
-        _clockManager.PauseClock();
-        _friendlyFireManager.EnableFriendlyFire();
-        _portalManager.DisableAllPortals();
-        _deathManager.Start(OnAllPlayersDead);
+        Store.Get<ClockManager>().PauseClock();
+        Store.Get<FriendlyFireManager>().EnableFriendlyFire();
+        Store.Get<PortalManager>().DisableAllPortals();
+        Store.Get<DeathManager>().Start(OnAllPlayersDead);
 
         _isEventInProgress = true;
         Log.LogMessage("Arena event started.");
@@ -45,7 +40,7 @@ internal class ArenaManager
 
     private void OnAllPlayersDead(string championName)
     {
-        _portalManager.EnableAllPortals();
+        Store.Get<PortalManager>().EnableAllPortals();
 
         ChatMessage.Send($"Good people, we have a winner! All hail the combatant, {championName}! Champion, leave the Arena now and rest! You've earned it!");
     }
@@ -54,8 +49,8 @@ internal class ArenaManager
     {
         if (_isEventInProgress)
         {
-            _clockManager.ResumeClock();
-            _friendlyFireManager.DisableFriendlyFire();
+            Store.Get<ClockManager>().ResumeClock();
+            Store.Get<FriendlyFireManager>().DisableFriendlyFire();
 
             _isEventInProgress = false;
             Log.LogMessage("Arena event ended.");

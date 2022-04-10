@@ -13,35 +13,33 @@ public class ArenaPlugin : BaseUnityPlugin
     public const string PluginName = "Arena";
     public const string PluginVersion = "0.1.1";
 
-    private readonly ArenaManager _arenaManager = new();
-
     public void Awake()
     {
         Log.Init(Logger);
 
-        On.RoR2.Run.Awake += Run_Awake;
-        On.RoR2.Run.OnDestroy += Run_OnDestroy;
+        On.RoR2.Run.Awake += OnRunAwake;
+        On.RoR2.Run.OnDestroy += OnRunOnDestroy;
     }
 
     public void OnDestroy()
     {
-        On.RoR2.Run.Awake -= Run_Awake;
-        On.RoR2.Run.OnDestroy -= Run_OnDestroy;
+        On.RoR2.Run.Awake -= OnRunAwake;
+        On.RoR2.Run.OnDestroy -= OnRunOnDestroy;
     }
 
-    private void Run_Awake(On.RoR2.Run.orig_Awake orig, Run self)
+    private void OnRunAwake(On.RoR2.Run.orig_Awake orig, Run self)
     {
         orig(self);
 
-        _arenaManager.Start();
+        Store.Get<ArenaManager>().Start();
         Log.LogMessage("Arena plugin hooked.");
     }
 
-    private void Run_OnDestroy(On.RoR2.Run.orig_OnDestroy orig, Run self)
+    private void OnRunOnDestroy(On.RoR2.Run.orig_OnDestroy orig, Run self)
     {
         orig(self);
 
-        _arenaManager.Stop();
+        Store.DestroyAll();
         Log.LogMessage("Arena plugin unhooked.");
     }
 }

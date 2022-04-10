@@ -4,11 +4,13 @@ using System.Reflection;
 
 namespace Arena.Managers;
 
-internal class PortalManager
+internal class PortalManager : ManagerBase
 {
     public delegate Interactability orig_GetInteractability(GenericInteraction self, Interactor activator);
 
     private Hook _hook_GetInteractability;
+
+    public override void Destroy() => EnableAllPortals();
 
     public void DisableAllPortals()
     {

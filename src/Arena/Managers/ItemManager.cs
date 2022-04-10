@@ -2,7 +2,7 @@
 
 namespace Arena.Managers;
 
-internal class ItemManager
+internal class ItemManager : ManagerBase
 {
     public void DropRandomItem(CharacterMaster player)
     {

@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace Arena.Managers;
 
-public class ChampionManager
+internal class ChampionManager : ManagerBase
 {
     public string ChampionName
     {
