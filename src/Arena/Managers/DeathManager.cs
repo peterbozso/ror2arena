@@ -6,13 +6,13 @@ namespace Arena.Managers;
 
 internal class DeathManager : ListeningManagerBase
 {
-    private Action<string> _onAllPlayersDead;
+    private Action<string> _onChampionWon;
 
-    public bool IsSinglePlayer => Store.Get<ChampionManager>().ChampionName != string.Empty;
+    public bool IsOnePlayerAlive => Store.Get<ChampionManager>().ChampionName != string.Empty;
 
-    public void WatchDeaths(Action<string> onAllPlayersDead)
+    public void WatchDeaths(Action<string> onchampionWon)
     {
-        _onAllPlayersDead = onAllPlayersDead;
+        _onChampionWon = onchampionWon;
         StartListening();
     }
 
@@ -51,7 +51,7 @@ internal class DeathManager : ListeningManagerBase
             Log.LogDebug("All other players died, only the Champion is alive: " + championName);
 
             StopListening();
-            _onAllPlayersDead(Store.Get<ChampionManager>().ChampionName);
+            _onChampionWon(Store.Get<ChampionManager>().ChampionName);
         }
         else
         {

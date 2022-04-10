@@ -32,9 +32,9 @@ internal class ArenaManager : ListeningManagerBase
 
     private void OnTeleporterCharged(TeleporterInteraction tpi)
     {
-        if (Store.Get<DeathManager>().IsSinglePlayer)
+        if (Store.Get<DeathManager>().IsOnePlayerAlive)
         {
-            Log.LogDebug("Only one player is alive. Not starting the event.");
+            Log.LogDebug("Only one player is alive. Not starting the Arena event.");
             return;
         }
 
@@ -43,14 +43,14 @@ internal class ArenaManager : ListeningManagerBase
         Store.Get<ClockManager>().PauseClock();
         Store.Get<FriendlyFireManager>().EnableFriendlyFire();
         Store.Get<PortalManager>().DisableAllPortals();
-        Store.Get<DeathManager>().WatchDeaths(OnAllPlayersDead);
+        Store.Get<DeathManager>().WatchDeaths(OnChampionWon);
 
         _isEventInProgress = true;
 
         Log.LogDebug("Arena event started.");
     }
 
-    private void OnAllPlayersDead(string championName)
+    private void OnChampionWon(string championName)
     {
         Store.Get<PortalManager>().EnableAllPortals();
 
