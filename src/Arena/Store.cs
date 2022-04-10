@@ -11,13 +11,14 @@ internal class Store
 
     public static T Get<T>() where T : ManagerBase, new()
     {
-        if (_managers.Value.ContainsKey(typeof(T)))
+        var managerType = typeof(T);
+
+        if (_managers.Value.ContainsKey(managerType))
         {
-            return (T)_managers.Value[typeof(T)];
+            return (T)_managers.Value[managerType];
         }
         else
         {
-            var managerType = typeof(T);
             var manager = new T();
             _managers.Value.Add(managerType, manager);
 
