@@ -20,7 +20,7 @@ public class ArenaPlugin : BaseUnityPlugin
         On.RoR2.Run.Awake += OnRunAwake;
         On.RoR2.Run.OnDestroy += OnRunOnDestroy;
 
-        Log.LogDebug($"{nameof(ArenaPlugin)} hooked.");
+        Log.LogDebug("Plugin hooked.");
     }
 
     public void OnDestroy()
@@ -28,7 +28,7 @@ public class ArenaPlugin : BaseUnityPlugin
         On.RoR2.Run.Awake -= OnRunAwake;
         On.RoR2.Run.OnDestroy -= OnRunOnDestroy;
 
-        Log.LogDebug($"{nameof(ArenaPlugin)} unhooked.");
+        Log.LogDebug("Plugin unhooked.");
     }
 
     private void OnRunAwake(On.RoR2.Run.orig_Awake orig, Run self)

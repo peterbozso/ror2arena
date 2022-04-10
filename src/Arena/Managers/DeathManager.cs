@@ -16,14 +16,14 @@ internal class DeathManager : ManagerBase
         _onAllPlayersDead = onAllPlayersDead;
         On.RoR2.CharacterBody.OnDeathStart += OnDeathStart;
 
-        Log.LogDebug($"{nameof(DeathManager)} started.");
+        Log.LogDebug($"Started listening.");
     }
 
     private void Stop()
     {
         On.RoR2.CharacterBody.OnDeathStart -= OnDeathStart;
 
-        Log.LogDebug($"{nameof(DeathManager)} stopped.");
+        Log.LogDebug($"Stopped listening.");
     }
 
     private void OnDeathStart(On.RoR2.CharacterBody.orig_OnDeathStart orig, CharacterBody self)

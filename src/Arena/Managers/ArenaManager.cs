@@ -12,7 +12,7 @@ internal class ArenaManager : ManagerBase
         TeleporterInteraction.onTeleporterChargedGlobal += OnTeleporterCharged;
         On.RoR2.Run.AdvanceStage += OnAdvanceStage;
 
-        Log.LogDebug($"{nameof(ArenaManager)} started.");
+        Log.LogDebug($"Started listening.");
     }
 
     public override void Destroy()
@@ -20,7 +20,7 @@ internal class ArenaManager : ManagerBase
         TeleporterInteraction.onTeleporterChargedGlobal -= OnTeleporterCharged;
         On.RoR2.Run.AdvanceStage -= OnAdvanceStage;
 
-        Log.LogDebug($"{nameof(ArenaManager)} stopped.");
+        Log.LogDebug($"Stopped listening.");
     }
 
     private void OnTeleporterCharged(TeleporterInteraction tpi)
