@@ -1,6 +1,6 @@
-﻿namespace Arena.Managers;
+﻿namespace Arena.Managers.Bases;
 
-internal abstract class ManagerBase
+internal abstract class ListeningManagerBase : ManagerBase
 {
     protected bool IsListening { get; set; }
 
@@ -8,7 +8,7 @@ internal abstract class ManagerBase
 
     protected virtual void StopListening() => IsListening = false;
 
-    public void Destroy()
+    public void StopIfListening()
     {
         if (IsListening)
         {

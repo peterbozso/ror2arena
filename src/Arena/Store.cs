@@ -1,6 +1,7 @@
-﻿using Arena.Managers;
+﻿using Arena.Managers.Bases;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Arena;
 
@@ -28,12 +29,12 @@ internal class Store
 
     public static void DestroyAll()
     {
-        foreach (var manager in _managers.Value.Values)
+        foreach (var manager in _managers.Value.Values.OfType<ListeningManagerBase>())
         {
-            manager.Destroy();
+            manager.StopIfListening();
         }
 
-        Log.LogDebug($"Destroyed managers count: {_managers.Value.Count}");
+        Log.LogDebug($"Number of destroyed managers: {_managers.Value.Count}");
 
         _managers.Value.Clear();
     }

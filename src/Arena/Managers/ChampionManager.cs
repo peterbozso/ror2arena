@@ -1,4 +1,5 @@
-﻿using RoR2;
+﻿using Arena.Managers.Bases;
+using RoR2;
 using System.Linq;
 
 namespace Arena.Managers;

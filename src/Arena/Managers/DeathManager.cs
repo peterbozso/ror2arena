@@ -1,9 +1,10 @@
-﻿using RoR2;
+﻿using Arena.Managers.Bases;
+using RoR2;
 using System;
 
 namespace Arena.Managers;
 
-internal class DeathManager : ManagerBase
+internal class DeathManager : ListeningManagerBase
 {
     private Action<string> _onAllPlayersDead;
 

@@ -1,9 +1,10 @@
-﻿using R2API.Utils;
+﻿using Arena.Managers.Bases;
+using R2API.Utils;
 using RoR2;
 
 namespace Arena.Managers;
 
-internal class ArenaManager : ManagerBase
+internal class ArenaManager : ListeningManagerBase
 {
     private bool _isEventInProgress;
 

@@ -1,10 +1,11 @@
-﻿using MonoMod.RuntimeDetour;
+﻿using Arena.Managers.Bases;
+using MonoMod.RuntimeDetour;
 using RoR2;
 using System.Reflection;
 
 namespace Arena.Managers;
 
-internal class PortalManager : ManagerBase
+internal class PortalManager : ListeningManagerBase
 {
     public delegate Interactability orig_GetInteractability(GenericInteraction self, Interactor activator);
 
