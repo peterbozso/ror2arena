@@ -8,7 +8,7 @@ internal abstract class ListeningManagerBase : ManagerBase
 
     protected virtual void StopListening() => IsListening = false;
 
-    public void StopIfListening()
+    public void Stop()
     {
         if (IsListening)
         {

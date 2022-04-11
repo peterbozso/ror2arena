@@ -10,9 +10,9 @@ internal class DeathManager : ListeningManagerBase
 
     public bool IsOnePlayerAlive => Store.Get<ChampionManager>().ChampionName != string.Empty;
 
-    public void WatchDeaths(Action<string> onchampionWon)
+    public void WatchDeaths(Action<string> onChampionWon)
     {
-        _onChampionWon = onchampionWon;
+        _onChampionWon = onChampionWon;
         StartListening();
     }
 

@@ -8,7 +8,7 @@ internal class ArenaManager : ListeningManagerBase
 {
     private bool _isEventInProgress;
 
-    public void WatchStage() => StartListening();
+    public void WatchStageEvents() => StartListening();
 
     protected override void StartListening()
     {

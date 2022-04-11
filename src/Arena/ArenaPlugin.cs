@@ -35,7 +35,7 @@ public class ArenaPlugin : BaseUnityPlugin
     {
         orig(self);
 
-        Store.Get<ArenaManager>().WatchStage();
+        Store.Get<ArenaManager>().WatchStageEvents();
 
         Log.LogDebug("Run started.");
     }
@@ -44,7 +44,7 @@ public class ArenaPlugin : BaseUnityPlugin
     {
         orig(self);
 
-        Store.DestroyAll();
+        Store.CleanUp();
 
         Log.LogDebug("Run ended.");
     }

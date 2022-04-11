@@ -11,31 +11,31 @@ internal class Store
 
     public static T Get<T>() where T : ManagerBase, new()
     {
-        var managerType = typeof(T);
+        var type = typeof(T);
 
-        if (_managers.Value.ContainsKey(managerType))
+        if (_managers.Value.ContainsKey(type))
         {
-            return (T)_managers.Value[managerType];
+            return (T)_managers.Value[type];
         }
         else
         {
             var manager = new T();
-            _managers.Value.Add(managerType, manager);
+            _managers.Value.Add(type, manager);
 
-            Log.LogDebug($"Created: {managerType.Name}");
+            Log.LogDebug($"Created: {type.Name}");
 
             return manager;
         }
     }
 
-    public static void DestroyAll()
+    public static void CleanUp()
     {
         foreach (var manager in _managers.Value.Values.OfType<ListeningManagerBase>())
         {
-            manager.StopIfListening();
+            manager.Stop();
         }
 
-        Log.LogDebug($"Number of destroyed managers: {_managers.Value.Count}");
+        Log.LogDebug($"Number of cleaned up managers: {_managers.Value.Count}");
 
         _managers.Value.Clear();
     }
