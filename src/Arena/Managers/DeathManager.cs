@@ -1,4 +1,5 @@
-﻿using Arena.Managers.Bases;
+﻿using Arena.Logging;
+using Arena.Managers.Bases;
 using RoR2;
 using System;
 using System.Collections.Generic;

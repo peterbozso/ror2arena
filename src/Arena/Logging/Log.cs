@@ -1,6 +1,6 @@
 ﻿using BepInEx.Logging;
 
-namespace Arena;
+namespace Arena.Logging;
 
 internal static class Log
 {

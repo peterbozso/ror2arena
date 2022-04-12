@@ -1,4 +1,5 @@
-﻿using Arena.Managers;
+﻿using Arena.Logging;
+using Arena.Managers;
 using BepInEx;
 using RoR2;
 using UnityEngine;
@@ -13,6 +14,8 @@ public class ArenaPlugin : BaseUnityPlugin
     public const string PluginAuthor = "peterbozso";
     public const string PluginName = "Arena";
     public const string PluginVersion = "0.1.1";
+
+    private readonly StatusLogger _statusLogger = new();
 
     public void Awake()
     {
@@ -55,7 +58,7 @@ public class ArenaPlugin : BaseUnityPlugin
         if (Input.GetKeyDown(KeyCode.F2))
         {
             Log.LogDebug(">>> ARENA MOD STATUS BEGIN");
-            Store.LogStatus();
+            _statusLogger.LogStatus(Store.GetLoggables());
             Log.LogDebug(">>> ARENA MOD STATUS END");
         }
     }
