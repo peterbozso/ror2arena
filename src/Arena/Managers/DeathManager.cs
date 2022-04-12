@@ -1,12 +1,18 @@
 ﻿using Arena.Managers.Bases;
 using RoR2;
 using System;
+using System.Collections.Generic;
 
 namespace Arena.Managers;
 
 internal class DeathManager : ListeningManagerBase
 {
     private Action<string> _onChampionWon;
+
+    public override IEnumerable<string> GetStatus() => new string[]
+    {
+        $"{ (IsListening ? "Watching deaths" : "Not watching deaths") }."
+    };
 
     public bool IsOnePlayerAlive => Store.Get<ChampionManager>().ChampionName != string.Empty;
 
@@ -20,7 +26,7 @@ internal class DeathManager : ListeningManagerBase
     {
         On.RoR2.CharacterBody.OnDeathStart += OnDeathStart;
 
-        Log.LogDebug($"Started watching deaths.");
+        Log.LogInfo($"Started watching deaths.");
 
         base.StartListening();
     }
@@ -29,7 +35,7 @@ internal class DeathManager : ListeningManagerBase
     {
         On.RoR2.CharacterBody.OnDeathStart -= OnDeathStart;
 
-        Log.LogDebug($"Stopped watching deaths.");
+        Log.LogInfo($"Stopped watching deaths.");
 
         base.StopListening();
     }
@@ -48,14 +54,14 @@ internal class DeathManager : ListeningManagerBase
 
         if (championName != string.Empty)
         {
-            Log.LogDebug("All other players died, only the Champion is alive: " + championName);
+            Log.LogInfo("Only the Champion is alive: " + championName);
 
             StopListening();
-            _onChampionWon(Store.Get<ChampionManager>().ChampionName);
+            _onChampionWon(championName);
         }
         else
         {
-            Log.LogDebug("There are still multiple fighters alive.");
+            Log.LogInfo("There are still multiple fighters alive.");
         }
 
         orig(self);

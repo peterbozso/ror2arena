@@ -1,24 +1,43 @@
 ﻿using Arena.Managers.Bases;
 using RoR2;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Arena.Managers;
 
 internal class ChampionManager : ManagerBase
 {
+    public override IEnumerable<string> GetStatus()
+    {
+        var alivePlayers = AlivePlayers;
+        var alivePlayerNames = string.Join(
+            ", ",
+            alivePlayers.Select(player => player.master.GetBody().GetUserName()));
+        var championName = ChampionName;
+
+        return new string[]
+        {
+            $"Alive player count: { alivePlayers.Length }",
+            $"Alive players: { (alivePlayerNames == string.Empty ? "none" : alivePlayerNames) }",
+            $"Champion: { (championName == string.Empty ? "none" : championName) }."
+        };
+    }
+
+
     public string ChampionName
     {
         get
         {
-            var players = PlayerCharacterMasterController.instances;
-
-            var alivePlayers = players.Where(player => IsAlive(player.master)).ToArray();
+            var alivePlayers = AlivePlayers;
 
             return alivePlayers.Length == 1
                 ? alivePlayers[0].master.GetBody().GetUserName()
                 : string.Empty;
         }
     }
+
+    private static PlayerCharacterMasterController[] AlivePlayers =>
+        PlayerCharacterMasterController.instances.Where(player => IsAlive(player.master)).ToArray();
 
     private static bool IsAlive(CharacterMaster player)
     {

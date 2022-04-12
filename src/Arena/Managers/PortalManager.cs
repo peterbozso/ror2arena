@@ -1,6 +1,7 @@
 ﻿using Arena.Managers.Bases;
 using MonoMod.RuntimeDetour;
 using RoR2;
+using System.Collections.Generic;
 using System.Reflection;
 
 namespace Arena.Managers;
@@ -10,6 +11,11 @@ internal class PortalManager : ListeningManagerBase
     public delegate Interactability orig_GetInteractability(GenericInteraction self, Interactor activator);
 
     private Hook _hook_GetInteractability;
+
+    public override IEnumerable<string> GetStatus() => new string[]
+    {
+        $"Portals are { (IsListening ? "disabled" : "enabled") }."
+    };
 
     public void DisableAllPortals() => StartListening();
 
@@ -27,7 +33,7 @@ internal class PortalManager : ListeningManagerBase
             this,
             new HookConfig());
 
-        Log.LogDebug("Portals disabled.");
+        Log.LogInfo("Portals disabled.");
 
         base.StartListening();
     }
@@ -38,7 +44,7 @@ internal class PortalManager : ListeningManagerBase
 
         _hook_GetInteractability.Dispose();
 
-        Log.LogDebug("Portals enabled.");
+        Log.LogInfo("Portals enabled.");
 
         base.StopListening();
     }

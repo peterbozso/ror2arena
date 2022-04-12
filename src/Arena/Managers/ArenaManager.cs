@@ -1,12 +1,19 @@
 ﻿using Arena.Managers.Bases;
 using R2API.Utils;
 using RoR2;
+using System.Collections.Generic;
 
 namespace Arena.Managers;
 
 internal class ArenaManager : ListeningManagerBase
 {
     private bool _isEventInProgress;
+
+    public override IEnumerable<string> GetStatus() => new string[]
+    {
+        $"{ (IsListening ? "Watching stage events" : "Not watching stage events") }.",
+        $"Arena event is { (_isEventInProgress ? "in progress" : "not in progress") }."
+    };
 
     public void WatchStageEvents() => StartListening();
 
@@ -15,7 +22,7 @@ internal class ArenaManager : ListeningManagerBase
         TeleporterInteraction.onTeleporterChargedGlobal += OnTeleporterCharged;
         On.RoR2.Run.AdvanceStage += OnAdvanceStage;
 
-        Log.LogDebug($"Started watching stage events.");
+        Log.LogInfo($"Started watching stage events.");
 
         base.StartListening();
     }
@@ -25,7 +32,7 @@ internal class ArenaManager : ListeningManagerBase
         TeleporterInteraction.onTeleporterChargedGlobal -= OnTeleporterCharged;
         On.RoR2.Run.AdvanceStage -= OnAdvanceStage;
 
-        Log.LogDebug($"Stopped watching stage events.");
+        Log.LogInfo($"Stopped watching stage events.");
 
         base.StopListening();
     }
@@ -34,7 +41,7 @@ internal class ArenaManager : ListeningManagerBase
     {
         if (Store.Get<DeathManager>().IsOnePlayerAlive)
         {
-            Log.LogDebug("Only one player is alive. Not starting the Arena event.");
+            Log.LogInfo("Only one player is alive. Not starting the Arena event.");
             return;
         }
 
@@ -47,7 +54,7 @@ internal class ArenaManager : ListeningManagerBase
 
         _isEventInProgress = true;
 
-        Log.LogDebug("Arena event started.");
+        Log.LogInfo("Arena event started.");
     }
 
     private void OnChampionWon(string championName)
@@ -66,7 +73,7 @@ internal class ArenaManager : ListeningManagerBase
 
             _isEventInProgress = false;
 
-            Log.LogDebug("Arena event ended.");
+            Log.LogInfo("Arena event ended.");
         }
 
         orig(self, nextScene);

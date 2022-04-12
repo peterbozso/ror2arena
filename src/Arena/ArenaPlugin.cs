@@ -1,6 +1,7 @@
 ﻿using Arena.Managers;
 using BepInEx;
 using RoR2;
+using UnityEngine;
 
 namespace Arena;
 
@@ -20,7 +21,7 @@ public class ArenaPlugin : BaseUnityPlugin
         On.RoR2.Run.Awake += OnRunAwake;
         On.RoR2.Run.OnDestroy += OnRunOnDestroy;
 
-        Log.LogDebug("Plugin hooked.");
+        Log.LogInfo("Plugin hooked.");
     }
 
     public void OnDestroy()
@@ -28,7 +29,7 @@ public class ArenaPlugin : BaseUnityPlugin
         On.RoR2.Run.Awake -= OnRunAwake;
         On.RoR2.Run.OnDestroy -= OnRunOnDestroy;
 
-        Log.LogDebug("Plugin unhooked.");
+        Log.LogInfo("Plugin unhooked.");
     }
 
     private void OnRunAwake(On.RoR2.Run.orig_Awake orig, Run self)
@@ -37,7 +38,7 @@ public class ArenaPlugin : BaseUnityPlugin
 
         Store.Get<ArenaManager>().WatchStageEvents();
 
-        Log.LogDebug("Run started.");
+        Log.LogInfo("Run started.");
     }
 
     private void OnRunOnDestroy(On.RoR2.Run.orig_OnDestroy orig, Run self)
@@ -46,6 +47,16 @@ public class ArenaPlugin : BaseUnityPlugin
 
         Store.CleanUp();
 
-        Log.LogDebug("Run ended.");
+        Log.LogInfo("Run ended.");
+    }
+
+    public void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.F2))
+        {
+            Log.LogDebug(">>> ARENA MOD STATUS BEGIN");
+            Store.LogStatus();
+            Log.LogDebug(">>> ARENA MOD STATUS END");
+        }
     }
 }
