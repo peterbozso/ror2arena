@@ -10,27 +10,40 @@ internal class Store : ILoggable
 {
     private static readonly Lazy<Store> _instance = new();
 
-    private static Store Instance { get { return _instance.Value; } }
+    private readonly Dictionary<Type, ManagerBase> _managers = new();
 
-    private Dictionary<Type, ManagerBase> Managers { get; } = new();
+    public static Store Instance { get { return _instance.Value; } }
 
     private Store() { }
 
-    public static IEnumerable<ILoggable> GetLoggables() =>
-        Instance.Managers.OfType<ILoggable>().ToList().Concat(new[] { Instance });
+    public IEnumerable<string> GetStatus()
+    {
+        var status = new List<string> { $"Number of managers: {_managers.Count}" };
 
-    public static T Get<T>() where T : ManagerBase, new()
+        if (_managers.Count > 0)
+        {
+            var managerNames = string.Join(", ", _managers.Select(kv => kv.Value.GetType().Name));
+            status.Add($"Managers: {managerNames}");
+        }
+
+        return status;
+    }
+
+    public IEnumerable<ILoggable> GetLoggables() =>
+        _managers.OfType<ILoggable>().Concat(new[] { Instance });
+
+    public T Get<T>() where T : ManagerBase, new()
     {
         var type = typeof(T);
 
-        if (Instance.Managers.ContainsKey(type))
+        if (_managers.ContainsKey(type))
         {
-            return (T)Instance.Managers[type];
+            return (T)_managers[type];
         }
         else
         {
             var manager = new T();
-            Instance.Managers.Add(type, manager);
+            _managers.Add(type, manager);
 
             Log.LogDebug($"Created: {type.Name}");
 
@@ -38,28 +51,15 @@ internal class Store : ILoggable
         }
     }
 
-    public static void CleanUp()
+    public void CleanUp()
     {
-        foreach (var manager in Instance.Managers.Values.OfType<ListeningManagerBase>())
+        foreach (var manager in _managers.Values.OfType<ListeningManagerBase>())
         {
             manager.Stop();
         }
 
-        Instance.Managers.Clear();
+        _managers.Clear();
 
         Log.LogDebug($"Cleaned up.");
-    }
-
-    public IEnumerable<string> GetStatus()
-    {
-        var status = new List<string> { $"Number of managers: {Instance.Managers.Count}" };
-
-        if (Instance.Managers.Count > 0)
-        {
-            var managerNames = string.Join(", ", Instance.Managers.Select(kv => kv.Value.GetType().Name));
-            status.Add($"Managers: {managerNames}");
-        }
-
-        return status;
     }
 }

@@ -39,7 +39,7 @@ public class ArenaPlugin : BaseUnityPlugin
     {
         orig(self);
 
-        Store.Get<ArenaManager>().WatchStageEvents();
+        Store.Instance.Get<ArenaManager>().WatchStageEvents();
 
         Log.LogInfo("Run started.");
     }
@@ -48,7 +48,7 @@ public class ArenaPlugin : BaseUnityPlugin
     {
         orig(self);
 
-        Store.CleanUp();
+        Store.Instance.CleanUp();
 
         Log.LogInfo("Run ended.");
     }
@@ -58,7 +58,7 @@ public class ArenaPlugin : BaseUnityPlugin
         if (Input.GetKeyDown(KeyCode.F2))
         {
             Log.LogDebug(">>> ARENA MOD STATUS BEGIN");
-            _statusLogger.LogStatus(Store.GetLoggables());
+            _statusLogger.LogStatus(Store.Instance.GetLoggables());
             Log.LogDebug(">>> ARENA MOD STATUS END");
         }
     }

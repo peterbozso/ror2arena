@@ -15,7 +15,7 @@ internal class DeathManager : ListeningManagerBase
         $"{ (IsListening ? "Watching deaths" : "Not watching deaths") }."
     };
 
-    public bool IsOnePlayerAlive => Store.Get<ChampionManager>().ChampionName != string.Empty;
+    public bool IsOnePlayerAlive => Store.Instance.Get<ChampionManager>().ChampionName != string.Empty;
 
     public void WatchDeaths(Action<string> onChampionWon)
     {
@@ -49,9 +49,9 @@ internal class DeathManager : ListeningManagerBase
             return;
         }
 
-        Store.Get<ItemManager>().DropRandomItem(self.master);
+        Store.Instance.Get<ItemManager>().DropRandomItem(self.master);
 
-        var championName = Store.Get<ChampionManager>().ChampionName;
+        var championName = Store.Instance.Get<ChampionManager>().ChampionName;
 
         if (championName != string.Empty)
         {

@@ -40,7 +40,7 @@ internal class ArenaManager : ListeningManagerBase
 
     private void OnTeleporterCharged(TeleporterInteraction tpi)
     {
-        if (Store.Get<DeathManager>().IsOnePlayerAlive)
+        if (Store.Instance.Get<DeathManager>().IsOnePlayerAlive)
         {
             Log.LogInfo("Only one player is alive. Not starting the Arena event.");
             return;
@@ -48,10 +48,10 @@ internal class ArenaManager : ListeningManagerBase
 
         ChatMessage.Send("Good people of the Imperial City, welcome to the Arena!");
 
-        Store.Get<ClockManager>().PauseClock();
-        Store.Get<FriendlyFireManager>().EnableFriendlyFire();
-        Store.Get<PortalManager>().DisableAllPortals();
-        Store.Get<DeathManager>().WatchDeaths(OnChampionWon);
+        Store.Instance.Get<ClockManager>().PauseClock();
+        Store.Instance.Get<FriendlyFireManager>().EnableFriendlyFire();
+        Store.Instance.Get<PortalManager>().DisableAllPortals();
+        Store.Instance.Get<DeathManager>().WatchDeaths(OnChampionWon);
 
         _isEventInProgress = true;
 
@@ -60,7 +60,7 @@ internal class ArenaManager : ListeningManagerBase
 
     private void OnChampionWon(string championName)
     {
-        Store.Get<PortalManager>().EnableAllPortals();
+        Store.Instance.Get<PortalManager>().EnableAllPortals();
 
         ChatMessage.Send($"Good people, we have a winner! All hail the combatant, {championName}! Champion, leave the Arena now and rest! You've earned it!");
     }
@@ -69,8 +69,8 @@ internal class ArenaManager : ListeningManagerBase
     {
         if (_isEventInProgress)
         {
-            Store.Get<ClockManager>().ResumeClock();
-            Store.Get<FriendlyFireManager>().DisableFriendlyFire();
+            Store.Instance.Get<ClockManager>().ResumeClock();
+            Store.Instance.Get<FriendlyFireManager>().DisableFriendlyFire();
 
             _isEventInProgress = false;
 
