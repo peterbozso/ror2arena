@@ -18,6 +18,16 @@ internal class ArenaManager : ListeningManagerBase
 
     public void WatchStageEvents() => Start();
 
+    public void EndArenaEventManually()
+    {
+        Store.Instance.Get<ClockManager>().ResumeClock();
+        Store.Instance.Get<FriendlyFireManager>().DisableFriendlyFire();
+        Store.Instance.Get<PortalManager>().EnableAllPortals();
+        Store.Instance.Get<DeathManager>().Stop();
+
+        IsEventInProgress = false;
+    }
+
     protected override void StartListening()
     {
         TeleporterInteraction.onTeleporterChargedGlobal += OnTeleporterCharged;

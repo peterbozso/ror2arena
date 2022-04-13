@@ -1,7 +1,6 @@
 ﻿using Arena.Logging;
 using Arena.Managers;
 using RoR2;
-using FriendlyFireManager = Arena.Managers.FriendlyFireManager;
 
 namespace Arena;
 
@@ -12,7 +11,9 @@ internal class Commands
     [ConCommand(commandName = EndArenaCommandName, flags = ConVarFlags.None, helpText = "Ends the Arena event.")]
     public static void EndArenaEvent(ConCommandArgs args)
     {
-        if (!Store.Instance.Get<ArenaManager>().IsEventInProgress)
+        var arenaManager = Store.Instance.Get<ArenaManager>();
+
+        if (!arenaManager.IsEventInProgress)
         {
             Log.Debug($"{EndArenaCommandName}: There's no arena event in progress.");
             return;
@@ -20,10 +21,7 @@ internal class Commands
 
         Log.Debug($"{EndArenaCommandName}: Ending arena event in response to console command...");
 
-        Store.Instance.Get<ClockManager>().ResumeClock();
-        Store.Instance.Get<FriendlyFireManager>().DisableFriendlyFire();
-        Store.Instance.Get<PortalManager>().EnableAllPortals();
-        Store.Instance.Get<DeathManager>().Stop();
+        arenaManager.EndArenaEventManually();
 
         Log.Info("Arena event ended.");
     }
