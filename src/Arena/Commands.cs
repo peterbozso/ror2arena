@@ -24,5 +24,7 @@ internal class Commands
         Store.Instance.Get<FriendlyFireManager>().DisableFriendlyFire();
         Store.Instance.Get<PortalManager>().EnableAllPortals();
         Store.Instance.Get<DeathManager>().Stop();
+
+        Log.Info("Arena event ended.");
     }
 }
