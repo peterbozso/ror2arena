@@ -1,13 +1,15 @@
-﻿using Arena.Logging;
+﻿using Arena.Commands;
+using Arena.Logging;
 using Arena.Managers;
 using BepInEx;
+using R2API.Networking;
 using R2API.Utils;
 using RoR2;
 using UnityEngine;
 
 namespace Arena;
 
-[R2APISubmoduleDependency(nameof(CommandHelper))]
+[R2APISubmoduleDependency(nameof(CommandHelper), nameof(NetworkingAPI))]
 [BepInDependency(R2API.R2API.PluginGUID)]
 [BepInPlugin(PluginGUID, PluginName, PluginVersion)]
 public class ArenaPlugin : BaseUnityPlugin
@@ -49,6 +51,7 @@ public class ArenaPlugin : BaseUnityPlugin
     {
         Log.Init(Logger);
         CommandHelper.AddToConsoleWhenReady();
+        NetworkingAPI.RegisterMessageType<EndArenaCommandNetMessage>();
     }
 
     private void OnRunAwake(On.RoR2.Run.orig_Awake orig, Run self)
