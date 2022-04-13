@@ -16,9 +16,9 @@ internal class ArenaManager : ListeningManagerBase
         $"Arena event is { (IsEventInProgress ? "in progress" : "not in progress") }."
     };
 
-    public void WatchStageEvents() => Start();
+    public void WatchTeleporter() => Start();
 
-    public void EndArenaEventManually()
+    public void EndArenaEvent()
     {
         Store.Instance.Get<ClockManager>().ResumeClock();
         Store.Instance.Get<FriendlyFireManager>().DisableFriendlyFire();
@@ -26,22 +26,22 @@ internal class ArenaManager : ListeningManagerBase
         Store.Instance.Get<DeathManager>().Stop();
 
         IsEventInProgress = false;
+
+        Log.Info("Arena event ended.");
     }
 
     protected override void StartListening()
     {
         TeleporterInteraction.onTeleporterChargedGlobal += OnTeleporterCharged;
-        On.RoR2.Run.AdvanceStage += OnAdvanceStage;
 
-        Log.Info($"Started watching stage events.");
+        Log.Info($"Started watching the Teleporter.");
     }
 
     protected override void StopListening()
     {
         TeleporterInteraction.onTeleporterChargedGlobal -= OnTeleporterCharged;
-        On.RoR2.Run.AdvanceStage -= OnAdvanceStage;
 
-        Log.Info($"Stopped watching stage events.");
+        Log.Info($"Stopped watching the Teleporter.");
     }
 
     private void OnTeleporterCharged(TeleporterInteraction tpi)
@@ -68,23 +68,8 @@ internal class ArenaManager : ListeningManagerBase
 
     private void OnChampionWon(string championName)
     {
-        Store.Instance.Get<FriendlyFireManager>().DisableFriendlyFire();
-        Store.Instance.Get<PortalManager>().EnableAllPortals();
-
         ChatMessage.Send($"Good people, we have a winner! All hail the combatant, {championName}! Champion, leave the Arena now and rest! You've earned it!");
-    }
 
-    private void OnAdvanceStage(On.RoR2.Run.orig_AdvanceStage orig, Run self, SceneDef nextScene)
-    {
-        if (IsEventInProgress)
-        {
-            Store.Instance.Get<ClockManager>().ResumeClock();
-
-            IsEventInProgress = false;
-
-            Log.Info("Arena event ended.");
-        }
-
-        orig(self, nextScene);
+        EndArenaEvent();
     }
 }

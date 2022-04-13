@@ -21,8 +21,6 @@ internal class Commands
 
         Log.Debug($"{EndArenaCommandName}: Ending arena event in response to console command...");
 
-        arenaManager.EndArenaEventManually();
-
-        Log.Info("Arena event ended.");
+        arenaManager.EndArenaEvent();
     }
 }

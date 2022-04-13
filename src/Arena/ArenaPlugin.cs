@@ -55,7 +55,7 @@ public class ArenaPlugin : BaseUnityPlugin
     {
         orig(self);
 
-        Store.Instance.Get<ArenaManager>().WatchStageEvents();
+        Store.Instance.Get<ArenaManager>().WatchTeleporter();
 
         Log.Info("Run started.");
     }
