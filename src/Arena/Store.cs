@@ -8,7 +8,7 @@ namespace Arena;
 
 internal class Store : ILoggable
 {
-    private static readonly Lazy<Store> _instance = new();
+    private static readonly Lazy<Store> _instance = new(() => new Store());
 
     private readonly Dictionary<Type, ManagerBase> _managers = new();
 
