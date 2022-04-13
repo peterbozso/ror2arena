@@ -8,12 +8,12 @@ namespace Arena.Managers;
 
 internal class ArenaManager : ListeningManagerBase
 {
-    private bool _isEventInProgress;
+    public bool IsEventInProgress;
 
     public override IEnumerable<string> GetStatus() => new string[]
     {
         $"{ (IsListening ? "Watching stage events" : "Not watching stage events") }.",
-        $"Arena event is { (_isEventInProgress ? "in progress" : "not in progress") }."
+        $"Arena event is { (IsEventInProgress ? "in progress" : "not in progress") }."
     };
 
     public void WatchStageEvents() => StartListening();
@@ -53,7 +53,7 @@ internal class ArenaManager : ListeningManagerBase
         Store.Instance.Get<PortalManager>().DisableAllPortals();
         Store.Instance.Get<DeathManager>().WatchDeaths(OnChampionWon);
 
-        _isEventInProgress = true;
+        IsEventInProgress = true;
 
         Log.Info("Arena event started.");
     }
@@ -67,12 +67,12 @@ internal class ArenaManager : ListeningManagerBase
 
     private void OnAdvanceStage(On.RoR2.Run.orig_AdvanceStage orig, Run self, SceneDef nextScene)
     {
-        if (_isEventInProgress)
+        if (IsEventInProgress)
         {
             Store.Instance.Get<ClockManager>().ResumeClock();
             Store.Instance.Get<FriendlyFireManager>().DisableFriendlyFire();
 
-            _isEventInProgress = false;
+            IsEventInProgress = false;
 
             Log.Info("Arena event ended.");
         }

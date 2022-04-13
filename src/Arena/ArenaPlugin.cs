@@ -1,11 +1,13 @@
 ﻿using Arena.Logging;
 using Arena.Managers;
 using BepInEx;
+using R2API.Utils;
 using RoR2;
 using UnityEngine;
 
 namespace Arena;
 
+[R2APISubmoduleDependency(nameof(CommandHelper))]
 [BepInDependency(R2API.R2API.PluginGUID)]
 [BepInPlugin(PluginGUID, PluginName, PluginVersion)]
 public class ArenaPlugin : BaseUnityPlugin
@@ -19,7 +21,7 @@ public class ArenaPlugin : BaseUnityPlugin
 
     public void Awake()
     {
-        Log.Init(Logger);
+        Init();
 
         On.RoR2.Run.Awake += OnRunAwake;
         On.RoR2.Run.OnDestroy += OnRunOnDestroy;
@@ -33,6 +35,20 @@ public class ArenaPlugin : BaseUnityPlugin
         On.RoR2.Run.OnDestroy -= OnRunOnDestroy;
 
         Log.Info("Plugin unhooked.");
+    }
+
+    public void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.F2))
+        {
+            _statusLogger.LogStatus();
+        }
+    }
+
+    private void Init()
+    {
+        Log.Init(Logger);
+        CommandHelper.AddToConsoleWhenReady();
     }
 
     private void OnRunAwake(On.RoR2.Run.orig_Awake orig, Run self)
@@ -51,13 +67,5 @@ public class ArenaPlugin : BaseUnityPlugin
         Store.Instance.CleanUp();
 
         Log.Info("Run ended.");
-    }
-
-    public void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.F2))
-        {
-            _statusLogger.LogStatus();
-        }
     }
 }
