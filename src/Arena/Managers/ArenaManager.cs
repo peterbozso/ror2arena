@@ -16,7 +16,7 @@ internal class ArenaManager : ListeningManagerBase
         $"Arena event is { (IsEventInProgress ? "in progress" : "not in progress") }."
     };
 
-    public void WatchStageEvents() => StartListening();
+    public void WatchStageEvents() => Start();
 
     protected override void StartListening()
     {
@@ -24,8 +24,6 @@ internal class ArenaManager : ListeningManagerBase
         On.RoR2.Run.AdvanceStage += OnAdvanceStage;
 
         Log.Info($"Started watching stage events.");
-
-        base.StartListening();
     }
 
     protected override void StopListening()
@@ -34,8 +32,6 @@ internal class ArenaManager : ListeningManagerBase
         On.RoR2.Run.AdvanceStage -= OnAdvanceStage;
 
         Log.Info($"Stopped watching stage events.");
-
-        base.StopListening();
     }
 
     private void OnTeleporterCharged(TeleporterInteraction tpi)

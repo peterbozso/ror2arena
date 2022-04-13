@@ -18,9 +18,9 @@ internal class PortalManager : ListeningManagerBase
         $"Portals are { (IsListening ? "disabled" : "enabled") }."
     };
 
-    public void DisableAllPortals() => StartListening();
+    public void DisableAllPortals() => Start();
 
-    public void EnableAllPortals() => StopListening();
+    public void EnableAllPortals() => Stop();
 
     protected override void StartListening()
     {
@@ -35,8 +35,6 @@ internal class PortalManager : ListeningManagerBase
             new HookConfig());
 
         Log.Info("Portals disabled.");
-
-        base.StartListening();
     }
 
     protected override void StopListening()
@@ -46,8 +44,6 @@ internal class PortalManager : ListeningManagerBase
         _hook_GetInteractability.Dispose();
 
         Log.Info("Portals enabled.");
-
-        base.StopListening();
     }
 
     private static Interactability OnTeleporterInteractionGetInteractability(

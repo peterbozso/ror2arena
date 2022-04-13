@@ -20,7 +20,7 @@ internal class DeathManager : ListeningManagerBase
     public void WatchDeaths(Action<string> onChampionWon)
     {
         _onChampionWon = onChampionWon;
-        StartListening();
+        Start();
     }
 
     protected override void StartListening()
@@ -28,8 +28,6 @@ internal class DeathManager : ListeningManagerBase
         On.RoR2.CharacterBody.OnDeathStart += OnDeathStart;
 
         Log.Info($"Started watching deaths.");
-
-        base.StartListening();
     }
 
     protected override void StopListening()
@@ -37,8 +35,6 @@ internal class DeathManager : ListeningManagerBase
         On.RoR2.CharacterBody.OnDeathStart -= OnDeathStart;
 
         Log.Info($"Stopped watching deaths.");
-
-        base.StopListening();
     }
 
     private void OnDeathStart(On.RoR2.CharacterBody.orig_OnDeathStart orig, CharacterBody self)
@@ -57,7 +53,7 @@ internal class DeathManager : ListeningManagerBase
         {
             Log.Info("Only the Champion is alive: " + championName);
 
-            StopListening();
+            Stop();
             _onChampionWon(championName);
         }
         else
