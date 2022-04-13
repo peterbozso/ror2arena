@@ -58,6 +58,7 @@ internal class ArenaManager : ListeningManagerBase
 
     private void OnChampionWon(string championName)
     {
+        Store.Instance.Get<FriendlyFireManager>().DisableFriendlyFire();
         Store.Instance.Get<PortalManager>().EnableAllPortals();
 
         ChatMessage.Send($"Good people, we have a winner! All hail the combatant, {championName}! Champion, leave the Arena now and rest! You've earned it!");
@@ -68,7 +69,6 @@ internal class ArenaManager : ListeningManagerBase
         if (IsEventInProgress)
         {
             Store.Instance.Get<ClockManager>().ResumeClock();
-            Store.Instance.Get<FriendlyFireManager>().DisableFriendlyFire();
 
             IsEventInProgress = false;
 
