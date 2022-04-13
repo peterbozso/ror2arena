@@ -14,6 +14,11 @@ internal class ClockManager : ManagerBase
 
     public void PauseClock()
     {
+        if (!_isRunning)
+        {
+            return;
+        }
+
         Stage.instance.sceneDef.sceneType = SceneType.Intermission;
         _isRunning = false;
 
@@ -22,6 +27,11 @@ internal class ClockManager : ManagerBase
 
     public void ResumeClock()
     {
+        if (_isRunning)
+        {
+            return;
+        }
+
         Stage.instance.sceneDef.sceneType = SceneType.Stage;
         _isRunning = true;
 

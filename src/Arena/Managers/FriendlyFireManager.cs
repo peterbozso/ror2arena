@@ -14,6 +14,11 @@ internal class FriendlyFireManager : ManagerBase
 
     public void EnableFriendlyFire()
     {
+        if (_isEnabled)
+        {
+            return;
+        }
+
         RunArtifactManager.instance.SetArtifactEnabledServer(RoR2Content.Artifacts.FriendlyFire, true);
         _isEnabled = true;
 
@@ -22,6 +27,11 @@ internal class FriendlyFireManager : ManagerBase
 
     public void DisableFriendlyFire()
     {
+        if (!_isEnabled)
+        {
+            return;
+        }
+
         RunArtifactManager.instance.SetArtifactEnabledServer(RoR2Content.Artifacts.FriendlyFire, false);
         _isEnabled = false;
 
