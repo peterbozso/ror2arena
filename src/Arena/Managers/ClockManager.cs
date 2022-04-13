@@ -7,7 +7,7 @@ namespace Arena.Managers;
 
 internal class ClockManager : ManagerBase
 {
-    private bool _isRunning;
+    private bool _isRunning = true;
 
     public override IEnumerable<string> GetStatus() =>
         new[] { $"The clock is { (_isRunning ? "running" : "paused") }." };
