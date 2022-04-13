@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace Arena.Managers;
 
-internal class ChampionManager : ManagerBase
+internal class PlayerManager : ManagerBase
 {
     public override IEnumerable<string> GetStatus()
     {
@@ -23,6 +23,8 @@ internal class ChampionManager : ManagerBase
         };
     }
 
+    public PlayerCharacterMasterController[] AlivePlayers =>
+        PlayerCharacterMasterController.instances.Where(player => IsAlive(player.master)).ToArray();
 
     public string ChampionName
     {
@@ -35,9 +37,6 @@ internal class ChampionManager : ManagerBase
                 : string.Empty;
         }
     }
-
-    private static PlayerCharacterMasterController[] AlivePlayers =>
-        PlayerCharacterMasterController.instances.Where(player => IsAlive(player.master)).ToArray();
 
     private static bool IsAlive(CharacterMaster player)
     {

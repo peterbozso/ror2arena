@@ -36,9 +36,11 @@ internal class ArenaManager : ListeningManagerBase
 
     private void OnTeleporterCharged(TeleporterInteraction tpi)
     {
-        if (Store.Instance.Get<DeathManager>().IsOnePlayerAlive)
+        var alivePlayerCount = Store.Instance.Get<PlayerManager>().AlivePlayers.Length;
+
+        if (alivePlayerCount < 2)
         {
-            Log.Info("Only one player is alive. Not starting the Arena event.");
+            Log.Info($"Number of alive players: {alivePlayerCount}. Not starting the Arena event.");
             return;
         }
 
