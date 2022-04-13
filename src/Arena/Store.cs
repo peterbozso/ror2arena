@@ -12,7 +12,7 @@ internal class Store : ILoggable
 
     private readonly Dictionary<Type, ManagerBase> _managers = new();
 
-    public static Store Instance { get { return _instance.Value; } }
+    public static Store Instance => _instance.Value;
 
     private Store() { }
 
