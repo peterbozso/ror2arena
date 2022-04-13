@@ -24,7 +24,7 @@ public class ArenaPlugin : BaseUnityPlugin
         On.RoR2.Run.Awake += OnRunAwake;
         On.RoR2.Run.OnDestroy += OnRunOnDestroy;
 
-        Log.LogInfo("Plugin hooked.");
+        Log.Info("Plugin hooked.");
     }
 
     public void OnDestroy()
@@ -32,7 +32,7 @@ public class ArenaPlugin : BaseUnityPlugin
         On.RoR2.Run.Awake -= OnRunAwake;
         On.RoR2.Run.OnDestroy -= OnRunOnDestroy;
 
-        Log.LogInfo("Plugin unhooked.");
+        Log.Info("Plugin unhooked.");
     }
 
     private void OnRunAwake(On.RoR2.Run.orig_Awake orig, Run self)
@@ -41,7 +41,7 @@ public class ArenaPlugin : BaseUnityPlugin
 
         Store.Instance.Get<ArenaManager>().WatchStageEvents();
 
-        Log.LogInfo("Run started.");
+        Log.Info("Run started.");
     }
 
     private void OnRunOnDestroy(On.RoR2.Run.orig_OnDestroy orig, Run self)
@@ -50,16 +50,14 @@ public class ArenaPlugin : BaseUnityPlugin
 
         Store.Instance.CleanUp();
 
-        Log.LogInfo("Run ended.");
+        Log.Info("Run ended.");
     }
 
     public void Update()
     {
         if (Input.GetKeyDown(KeyCode.F2))
         {
-            Log.LogDebug(">>> ARENA MOD STATUS BEGIN");
-            _statusLogger.LogStatus(Store.Instance.GetLoggables());
-            Log.LogDebug(">>> ARENA MOD STATUS END");
+            _statusLogger.LogStatus();
         }
     }
 }

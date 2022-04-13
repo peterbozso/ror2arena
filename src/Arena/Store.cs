@@ -44,9 +44,6 @@ internal class Store : ILoggable
         {
             var manager = new T();
             _managers.Add(type, manager);
-
-            Log.LogDebug($"Created: {type.Name}");
-
             return manager;
         }
     }
@@ -59,7 +56,5 @@ internal class Store : ILoggable
         }
 
         _managers.Clear();
-
-        Log.LogDebug($"Cleaned up.");
     }
 }

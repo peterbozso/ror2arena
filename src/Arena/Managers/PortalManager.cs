@@ -34,7 +34,7 @@ internal class PortalManager : ListeningManagerBase
             this,
             new HookConfig());
 
-        Log.LogInfo("Portals disabled.");
+        Log.Info("Portals disabled.");
 
         base.StartListening();
     }
@@ -45,7 +45,7 @@ internal class PortalManager : ListeningManagerBase
 
         _hook_GetInteractability.Dispose();
 
-        Log.LogInfo("Portals enabled.");
+        Log.Info("Portals enabled.");
 
         base.StopListening();
     }

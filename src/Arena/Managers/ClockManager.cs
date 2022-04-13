@@ -17,7 +17,7 @@ internal class ClockManager : ManagerBase
         Stage.instance.sceneDef.sceneType = SceneType.Intermission;
         _isRunning = false;
 
-        Log.LogInfo("Clock paused.");
+        Log.Info("Clock paused.");
     }
 
     public void ResumeClock()
@@ -25,6 +25,6 @@ internal class ClockManager : ManagerBase
         Stage.instance.sceneDef.sceneType = SceneType.Stage;
         _isRunning = true;
 
-        Log.LogInfo("Clock resumed.");
+        Log.Info("Clock resumed.");
     }
 }

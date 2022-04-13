@@ -23,7 +23,7 @@ internal class ArenaManager : ListeningManagerBase
         TeleporterInteraction.onTeleporterChargedGlobal += OnTeleporterCharged;
         On.RoR2.Run.AdvanceStage += OnAdvanceStage;
 
-        Log.LogInfo($"Started watching stage events.");
+        Log.Info($"Started watching stage events.");
 
         base.StartListening();
     }
@@ -33,7 +33,7 @@ internal class ArenaManager : ListeningManagerBase
         TeleporterInteraction.onTeleporterChargedGlobal -= OnTeleporterCharged;
         On.RoR2.Run.AdvanceStage -= OnAdvanceStage;
 
-        Log.LogInfo($"Stopped watching stage events.");
+        Log.Info($"Stopped watching stage events.");
 
         base.StopListening();
     }
@@ -42,7 +42,7 @@ internal class ArenaManager : ListeningManagerBase
     {
         if (Store.Instance.Get<DeathManager>().IsOnePlayerAlive)
         {
-            Log.LogInfo("Only one player is alive. Not starting the Arena event.");
+            Log.Info("Only one player is alive. Not starting the Arena event.");
             return;
         }
 
@@ -55,7 +55,7 @@ internal class ArenaManager : ListeningManagerBase
 
         _isEventInProgress = true;
 
-        Log.LogInfo("Arena event started.");
+        Log.Info("Arena event started.");
     }
 
     private void OnChampionWon(string championName)
@@ -74,7 +74,7 @@ internal class ArenaManager : ListeningManagerBase
 
             _isEventInProgress = false;
 
-            Log.LogInfo("Arena event ended.");
+            Log.Info("Arena event ended.");
         }
 
         orig(self, nextScene);

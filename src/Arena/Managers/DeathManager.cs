@@ -27,7 +27,7 @@ internal class DeathManager : ListeningManagerBase
     {
         On.RoR2.CharacterBody.OnDeathStart += OnDeathStart;
 
-        Log.LogInfo($"Started watching deaths.");
+        Log.Info($"Started watching deaths.");
 
         base.StartListening();
     }
@@ -36,7 +36,7 @@ internal class DeathManager : ListeningManagerBase
     {
         On.RoR2.CharacterBody.OnDeathStart -= OnDeathStart;
 
-        Log.LogInfo($"Stopped watching deaths.");
+        Log.Info($"Stopped watching deaths.");
 
         base.StopListening();
     }
@@ -55,14 +55,14 @@ internal class DeathManager : ListeningManagerBase
 
         if (championName != string.Empty)
         {
-            Log.LogInfo("Only the Champion is alive: " + championName);
+            Log.Info("Only the Champion is alive: " + championName);
 
             StopListening();
             _onChampionWon(championName);
         }
         else
         {
-            Log.LogInfo("There are still multiple fighters alive.");
+            Log.Info("There are still multiple fighters alive.");
         }
 
         orig(self);

@@ -17,7 +17,7 @@ internal class FriendlyFireManager : ManagerBase
         RunArtifactManager.instance.SetArtifactEnabledServer(RoR2Content.Artifacts.FriendlyFire, true);
         _isEnabled = true;
 
-        Log.LogInfo("Friendly fire enabled.");
+        Log.Info("Friendly fire enabled.");
     }
 
     public void DisableFriendlyFire()
@@ -25,6 +25,6 @@ internal class FriendlyFireManager : ManagerBase
         RunArtifactManager.instance.SetArtifactEnabledServer(RoR2Content.Artifacts.FriendlyFire, false);
         _isEnabled = false;
 
-        Log.LogInfo("Friendly fire disabled.");
+        Log.Info("Friendly fire disabled.");
     }
 }

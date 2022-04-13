@@ -1,19 +1,21 @@
-﻿using System.Collections.Generic;
-
-namespace Arena.Logging;
+﻿namespace Arena.Logging;
 
 internal class StatusLogger
 {
-    public void LogStatus(IEnumerable<ILoggable> loggables)
+    public void LogStatus()
     {
-        foreach (var loggable in loggables)
+        Log.Debug(">>> ARENA MOD STATUS BEGIN");
+
+        foreach (var loggable in Store.Instance.GetLoggables())
         {
-            Log.LogDebug($"{loggable.GetType().Name} status:");
+            Log.Debug($"{loggable.GetType().Name} status:");
 
             foreach (var statusLine in loggable.GetStatus())
             {
-                Log.LogDebug($"* {statusLine}");
+                Log.Debug($"* {statusLine}");
             }
         }
+
+        Log.Debug(">>> ARENA MOD STATUS END");
     }
 }
