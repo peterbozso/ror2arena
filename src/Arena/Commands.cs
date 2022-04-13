@@ -18,7 +18,7 @@ internal class Commands
             return;
         }
 
-        Log.Debug($"{EndArenaCommandName}: Ending arena event in response to console command.");
+        Log.Debug($"{EndArenaCommandName}: Ending arena event in response to console command...");
 
         Store.Instance.Get<ClockManager>().ResumeClock();
         Store.Instance.Get<FriendlyFireManager>().DisableFriendlyFire();

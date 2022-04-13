@@ -30,7 +30,7 @@ internal class Store : ILoggable
     }
 
     public IEnumerable<ILoggable> GetLoggables() =>
-        _managers.OfType<ILoggable>().Concat(new[] { Instance });
+        new[] { Instance }.Concat(_managers.Values.Cast<ILoggable>());
 
     public T Get<T>() where T : ManagerBase, new()
     {
