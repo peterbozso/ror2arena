@@ -19,7 +19,7 @@ internal static class ConCommands
     {
         if (!NetworkServer.active)
         {
-            Log.Debug($"{EndArenaCommandName}: Only the server can use this command.");
+            Log.Debug($"{EndArenaCommandName}: Only the host can use this command.");
             return;
         }
 
