@@ -5,36 +5,31 @@ using System.Collections.Generic;
 
 namespace Arena.Managers;
 
-internal class ClockManager : ManagerBase
+internal class ClockManager : ListeningManagerBase
 {
-    private bool _isRunning = true;
-
     public override IEnumerable<string> GetStatus() =>
-        new[] { $"The clock is { (_isRunning ? "running" : "paused") }." };
+        new[] { $"The clock is { (IsListening ? "running" : "paused") }." };
 
-    public void PauseClock()
+    public void PauseClock() => Start();
+
+    public void ResumeClock() => Stop();
+
+    protected override void StartListening()
     {
-        if (!_isRunning)
-        {
-            return;
-        }
-
-        Stage.instance.sceneDef.sceneType = SceneType.Intermission;
-        _isRunning = false;
+        On.RoR2.Run.ShouldUpdateRunStopwatch += OnShouldUpdateRunStopwatch;
 
         Log.Info("Clock paused.");
     }
 
-    public void ResumeClock()
+    protected override void StopListening()
     {
-        if (_isRunning)
-        {
-            return;
-        }
-
-        Stage.instance.sceneDef.sceneType = SceneType.Stage;
-        _isRunning = true;
+        On.RoR2.Run.ShouldUpdateRunStopwatch -= OnShouldUpdateRunStopwatch;
 
         Log.Info("Clock resumed.");
     }
+
+    private bool OnShouldUpdateRunStopwatch(
+        On.RoR2.Run.orig_ShouldUpdateRunStopwatch orig,
+        Run self) =>
+            false;
 }
