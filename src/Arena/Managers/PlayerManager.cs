@@ -23,8 +23,8 @@ internal class PlayerManager : ManagerBase
         };
     }
 
-    public PlayerCharacterMasterController[] AlivePlayers =>
-        PlayerCharacterMasterController.instances.Where(player => IsAlive(player.master)).ToArray();
+    public NetworkUser[] AlivePlayers =>
+        NetworkUser.readOnlyInstancesList.Where(user => IsAlive(user.master)).ToArray();
 
     public string ChampionName
     {

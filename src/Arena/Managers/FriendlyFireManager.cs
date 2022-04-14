@@ -2,6 +2,7 @@
 using Arena.Managers.Bases;
 using RoR2;
 using System.Collections.Generic;
+using UnityEngine.Networking;
 
 namespace Arena.Managers;
 
@@ -19,7 +20,11 @@ internal class FriendlyFireManager : ManagerBase
             return;
         }
 
-        RunArtifactManager.instance.SetArtifactEnabledServer(RoR2Content.Artifacts.FriendlyFire, true);
+        if (NetworkServer.active)
+        {
+            RunArtifactManager.instance.SetArtifactEnabledServer(RoR2Content.Artifacts.FriendlyFire, true);
+        }
+
         _isEnabled = true;
 
         Log.Info("Friendly fire enabled.");
@@ -32,7 +37,11 @@ internal class FriendlyFireManager : ManagerBase
             return;
         }
 
-        RunArtifactManager.instance.SetArtifactEnabledServer(RoR2Content.Artifacts.FriendlyFire, false);
+        if (NetworkServer.active)
+        {
+            RunArtifactManager.instance.SetArtifactEnabledServer(RoR2Content.Artifacts.FriendlyFire, false);
+        }
+
         _isEnabled = false;
 
         Log.Info("Friendly fire disabled.");
