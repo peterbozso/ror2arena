@@ -3,6 +3,7 @@ using Arena.Managers.Bases;
 using R2API.Utils;
 using RoR2;
 using System.Collections.Generic;
+using System.Drawing;
 
 namespace Arena.Managers;
 
@@ -54,7 +55,7 @@ internal class ArenaManager : ListeningManagerBase
             return;
         }
 
-        ChatMessage.Send("Good people of the Imperial City, welcome to the Arena!");
+        Announce("Good people of the Imperial City, welcome to the Arena!");
 
         Store.Instance.Get<ClockManager>().PauseClock();
         Store.Instance.Get<FriendlyFireManager>().EnableFriendlyFire();
@@ -68,8 +69,11 @@ internal class ArenaManager : ListeningManagerBase
 
     private void OnChampionWon(string championName)
     {
-        ChatMessage.Send($"Good people, we have a winner! All hail the combatant, {championName}! Champion, leave the Arena now and rest! You've earned it!");
+        Announce($"Good people, we have a winner! All hail the combatant, {championName}! Champion, leave the Arena now and rest! You've earned it!");
 
         EndArenaEvent();
     }
+
+    private static void Announce(string message) =>
+        ChatMessage.SendColored(message, Color.Gold, "Arena Mouth");
 }
