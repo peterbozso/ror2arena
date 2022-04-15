@@ -1,11 +1,9 @@
 ﻿using Arena.Logging;
 using Arena.Managers;
-using R2API.Networking;
-using R2API.Networking.Interfaces;
 using RoR2;
 using UnityEngine.Networking;
 
-namespace Arena.Commands;
+namespace Arena;
 
 internal static class ConCommands
 {
@@ -31,6 +29,8 @@ internal static class ConCommands
             return;
         }
 
-        new EndArenaCommandNetMessage().Send(NetworkDestination.Clients | NetworkDestination.Server);
+        Log.Debug($"{EndArenaCommandName}: Ending arena event in response to console command...");
+
+        arenaManager.EndArenaEvent();
     }
 }

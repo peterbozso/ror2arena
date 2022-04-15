@@ -1,15 +1,14 @@
-﻿using Arena.Commands;
-using Arena.Logging;
+﻿using Arena.Logging;
 using Arena.Managers;
 using BepInEx;
-using R2API.Networking;
 using R2API.Utils;
 using RoR2;
 using UnityEngine;
+using UnityEngine.Networking;
 
 namespace Arena;
 
-[R2APISubmoduleDependency(nameof(CommandHelper), nameof(NetworkingAPI))]
+[R2APISubmoduleDependency(nameof(CommandHelper))]
 [BepInDependency(R2API.R2API.PluginGUID)]
 [BepInPlugin(PluginGUID, PluginName, PluginVersion)]
 public class ArenaPlugin : BaseUnityPlugin
@@ -28,7 +27,7 @@ public class ArenaPlugin : BaseUnityPlugin
         On.RoR2.Run.Awake += OnRunAwake;
         On.RoR2.Run.OnDestroy += OnRunOnDestroy;
 
-        Log.Info("Plugin hooked.");
+        Log.Debug("Plugin hooked.");
     }
 
     public void OnDestroy()
@@ -36,12 +35,12 @@ public class ArenaPlugin : BaseUnityPlugin
         On.RoR2.Run.Awake -= OnRunAwake;
         On.RoR2.Run.OnDestroy -= OnRunOnDestroy;
 
-        Log.Info("Plugin unhooked.");
+        Log.Debug("Plugin unhooked.");
     }
 
     public void Update()
     {
-        if (Input.GetKeyDown(KeyCode.F2))
+        if (NetworkServer.active && Input.GetKeyDown(KeyCode.F2))
         {
             _statusLogger.LogStatus();
         }
@@ -51,12 +50,16 @@ public class ArenaPlugin : BaseUnityPlugin
     {
         Log.Init(Logger);
         CommandHelper.AddToConsoleWhenReady();
-        NetworkingAPI.RegisterMessageType<EndArenaCommandNetMessage>();
     }
 
     private void OnRunAwake(On.RoR2.Run.orig_Awake orig, Run self)
     {
         orig(self);
+
+        if (!NetworkServer.active)
+        {
+            return;
+        }
 
         Store.Instance.Get<ArenaManager>().WatchTeleporter();
 
@@ -66,6 +69,11 @@ public class ArenaPlugin : BaseUnityPlugin
     private void OnRunOnDestroy(On.RoR2.Run.orig_OnDestroy orig, Run self)
     {
         orig(self);
+
+        if (!NetworkServer.active)
+        {
+            return;
+        }
 
         Store.Instance.CleanUp();
 

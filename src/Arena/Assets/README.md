@@ -1,6 +1,6 @@
 # Arena
 
-This mod is multiplayer-only. It won't do anything in a singleplayer run.
+This mod is multiplayer-only. It won't do anything in a singleplayer run. It's enough if only the host has it installed.
 
 At the end of each stage, when the Teleporter is fully charged, the following things will happen:
 
