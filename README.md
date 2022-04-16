@@ -20,3 +20,9 @@ To be able to reload the mod while developing without restarting the game (which
 6. Load the mod by pressing `F6` on the main menu.
 
 Whenever you make changes to the code, repeat step 4 and 5. Make sure you reload the mod only on the main menu, not during a run, otherwise (because of the way the mod is structured) you could end up with some unexpected behavior.
+
+## Debugging
+
+The mod logs information about what it is doing into the BepInEx console.
+
+Use the `F2` key during gameplay to dump the internal state of the mod there.
