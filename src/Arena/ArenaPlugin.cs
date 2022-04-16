@@ -8,6 +8,7 @@ using UnityEngine.Networking;
 
 namespace Arena;
 
+[NetworkCompatibility(CompatibilityLevel.NoNeedForSync)]
 [R2APISubmoduleDependency(nameof(CommandHelper))]
 [BepInDependency(R2API.R2API.PluginGUID)]
 [BepInPlugin(PluginGUID, PluginName, PluginVersion)]
