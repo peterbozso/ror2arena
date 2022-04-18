@@ -13,7 +13,7 @@ internal static class ConCommands
         commandName = EndArenaCommandName,
         flags = ConVarFlags.None,
         helpText = "Ends the Arena event.")]
-    public static void EndArenaEvent(ConCommandArgs args)
+    public static void EndArenaEvent(ConCommandArgs _)
     {
         if (!NetworkServer.active)
         {
