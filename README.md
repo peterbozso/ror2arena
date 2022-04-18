@@ -14,7 +14,7 @@ To be able to reload the mod while developing without restarting the game (which
 
 1. Follow the setup instructions (the steps before "Getting the boilerplate") [here.](https://github.com/risk-of-thunder/R2Wiki/wiki/First-Mod)
 2. Install [DebugToolkit](https://thunderstore.io/package/IHarbHD/DebugToolkit/) and [ScriptEngine.](https://github.com/BepInEx/BepInEx.Debug#scriptengine)
-3. Change the second argument of the copy command in the post-build event in the [Arena.csproj](src/Arena/Arena.csproj) file to use the correct path to your `BepInEx\scripts` folder. [More info.](https://github.com/risk-of-thunder/R2Wiki/wiki/Build-Events#copy-output-dll=)
+3. Change the second argument of the copy command in the post-build event in the [Arena.csproj](src/Arena/Arena.csproj) file to use the correct path to your `BepInEx\scripts` folder. [More info.](https://github.com/risk-of-thunder/R2Wiki/wiki/Build-Events#copy-output-dll)
 4. Start the game modded.
 5. Build the solution.
 6. Load the mod by pressing `F6` on the main menu.
