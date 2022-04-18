@@ -9,6 +9,9 @@ namespace Arena.Managers;
 
 internal class ArenaManager : ListeningManagerBase
 {
+    // https://es.wikipedia.org/wiki/Arena_(color)
+    private static readonly Color ArenaColor = Color.FromArgb(236, 226, 198);
+
     public bool IsEventInProgress;
 
     public override IEnumerable<string> GetStatus() => new string[]
@@ -75,5 +78,5 @@ internal class ArenaManager : ListeningManagerBase
     }
 
     private static void Announce(string message) =>
-        ChatMessage.SendColored(message, Color.Gold, "Arena Mouth");
+        ChatMessage.SendColored(message, ArenaColor, "Arena Mouth");
 }
