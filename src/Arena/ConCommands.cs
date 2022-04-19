@@ -1,7 +1,6 @@
 ﻿using Arena.Logging;
 using Arena.Managers;
 using RoR2;
-using UnityEngine.Networking;
 
 namespace Arena;
 
@@ -15,7 +14,7 @@ internal static class ConCommands
         helpText = "Ends the Arena event.")]
     public static void EndArenaEvent(ConCommandArgs _)
     {
-        if (!NetworkServer.active)
+        if (!Server.IsRunning)
         {
             Log.Debug($"{EndArenaCommandName}: Only the host can use this command.");
             return;

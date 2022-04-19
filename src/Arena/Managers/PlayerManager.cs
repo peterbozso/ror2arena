@@ -12,7 +12,7 @@ internal class PlayerManager : ManagerBase
         var alivePlayers = AlivePlayers;
         var alivePlayerNames = string.Join(
             ", ",
-            alivePlayers.Select(player => player.master.GetBody().GetUserName()));
+            alivePlayers.Select(player => player.GetBody().GetUserName()));
         var championName = ChampionName;
 
         return new string[]
@@ -23,9 +23,6 @@ internal class PlayerManager : ManagerBase
         };
     }
 
-    public NetworkUser[] AlivePlayers =>
-        NetworkUser.readOnlyInstancesList.Where(user => IsAlive(user.master)).ToArray();
-
     public string ChampionName
     {
         get
@@ -33,10 +30,12 @@ internal class PlayerManager : ManagerBase
             var alivePlayers = AlivePlayers;
 
             return alivePlayers.Length == 1
-                ? alivePlayers[0].master.GetBody().GetUserName()
+                ? alivePlayers[0].GetBody().GetUserName()
                 : string.Empty;
         }
     }
+
+    public CharacterMaster[] AlivePlayers => Server.AllPlayers.Where(user => IsAlive(user)).ToArray();
 
     private static bool IsAlive(CharacterMaster player)
     {

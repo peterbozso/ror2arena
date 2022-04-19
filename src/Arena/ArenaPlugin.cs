@@ -4,7 +4,6 @@ using BepInEx;
 using R2API.Utils;
 using RoR2;
 using UnityEngine;
-using UnityEngine.Networking;
 
 namespace Arena;
 
@@ -41,7 +40,7 @@ public class ArenaPlugin : BaseUnityPlugin
 
     public void Update()
     {
-        if (NetworkServer.active && Input.GetKeyDown(KeyCode.F2))
+        if (Server.IsRunning && Input.GetKeyDown(KeyCode.F2))
         {
             _statusLogger.LogStatus();
         }
@@ -57,7 +56,7 @@ public class ArenaPlugin : BaseUnityPlugin
     {
         orig(self);
 
-        if (!NetworkServer.active)
+        if (!Server.IsRunning)
         {
             return;
         }
@@ -71,7 +70,7 @@ public class ArenaPlugin : BaseUnityPlugin
     {
         orig(self);
 
-        if (!NetworkServer.active)
+        if (!Server.IsRunning)
         {
             return;
         }
