@@ -79,7 +79,7 @@
     </Reference>
   </ItemGroup>
 
-  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent" Condition="$(Configuration) == Debug">
     <Exec Command="copy /Y &quot;$(TargetPath)&quot; &quot;C:\Users\peter\AppData\Roaming\Thunderstore Mod Manager\DataFolder\RiskOfRain2\profiles\Dev\BepInEx\scripts&quot;" />
   </Target>
 
