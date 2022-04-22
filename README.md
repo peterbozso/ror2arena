@@ -17,13 +17,12 @@ To be able to reload the mod while developing without restarting the game (which
    * [DebugToolkit](https://thunderstore.io/package/IHarbHD/DebugToolkit/)
    * [PlayerBots](https://thunderstore.io/package/Meledy/PlayerBots/)
 3. Install [ScriptEngine.](https://github.com/BepInEx/BepInEx.Debug#scriptengine)
-4. Install [DebugToolkit](https://thunderstore.io/package/IHarbHD/DebugToolkit/) and [ScriptEngine.](https://github.com/BepInEx/BepInEx.Debug#scriptengine)
-5. Change the second argument of the copy command in the post-build event in the [Arena.csproj](src/Arena/Arena.csproj) file to use the correct path to your `BepInEx\scripts` folder. [More info.](https://github.com/risk-of-thunder/R2Wiki/wiki/Build-Events#copy-output-dll)
-6. Start the game modded.
-7. Build the solution in `Debug` configuration.
-8. Load the mod by pressing `F6` on the main menu.
+4. Change the second argument of the copy command in the post-build event in the [Arena.csproj](src/Arena/Arena.csproj) file to use the correct path to your `BepInEx\scripts` folder. [More info.](https://github.com/risk-of-thunder/R2Wiki/wiki/Build-Events#copy-output-dll)
+5. Start the game modded.
+6. Build the solution in `Debug` configuration.
+7. Load the mod by pressing `F6` on the main menu.
 
-Whenever you make changes to the code, repeat step 4 and 5. Make sure you reload the mod only on the main menu, not during a run, otherwise (because of the way the mod is structured) you could end up with some unexpected behavior.
+Whenever you make changes to the code, repeat step 6 and 7. Make sure you reload the mod only on the main menu, not during a run, otherwise (because of the way the mod is structured) you could end up with some unexpected behavior.
 
 ## Debugging
 
