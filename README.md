@@ -2,7 +2,7 @@
 
 Arena is a [Risk of Rain 2](https://en.wikipedia.org/wiki/Risk_of_Rain_2) mod for fighting your friends at the end of each stage.
 
-See the [mod's readme](src/Arena/Assets/README.md) for more details.
+See the [mod's readme](src/Arena/Package/README.md) for more details.
 
 Download it from the [Thunderstore.](https://thunderstore.io/package/peterbozso/Arena/)
 
