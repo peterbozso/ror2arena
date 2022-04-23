@@ -1,5 +1,6 @@
 ﻿using Arena.Logging;
 using Arena.Managers.Bases;
+using Arena.Models;
 using R2API.Utils;
 using RoR2;
 using System.Collections.Generic;
@@ -50,7 +51,7 @@ internal class ArenaManager : ListeningManagerBase
 
     private void OnTeleporterCharged(TeleporterInteraction tpi)
     {
-        var alivePlayerCount = Store.Instance.Get<PlayerManager>().AlivePlayers.Length;
+        var alivePlayerCount = Store.Instance.Get<PlayerManager>().AlivePlayerCount;
 
         if (alivePlayerCount < 2)
         {
@@ -70,9 +71,11 @@ internal class ArenaManager : ListeningManagerBase
         Log.Info("Arena event started.");
     }
 
-    private void OnChampionWon(string championName)
+    private void OnChampionWon(Champion champion)
     {
-        Announce($"Good people, we have a winner! All hail the combatant, {championName}! Champion, leave the Arena now and rest! You've earned it!");
+        Announce($"Good people, we have a winner! All hail the combatant, {champion.Name}! Champion, leave the Arena now and rest! You've earned it!");
+
+        champion.Rejuvenate();
 
         EndArenaEvent();
     }

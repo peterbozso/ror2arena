@@ -1,5 +1,6 @@
 ﻿using Arena.Logging;
 using Arena.Managers.Bases;
+using Arena.Models;
 using RoR2;
 using System;
 using System.Collections.Generic;
@@ -8,14 +9,14 @@ namespace Arena.Managers;
 
 internal class DeathManager : ListeningManagerBase
 {
-    private Action<string> _onChampionWon;
+    private Action<Champion> _onChampionWon;
 
     public override IEnumerable<string> GetStatus() => new string[]
     {
         $"{ (IsListening ? "Watching deaths" : "Not watching deaths") }."
     };
 
-    public void WatchDeaths(Action<string> onChampionWon)
+    public void WatchDeaths(Action<Champion> onChampionWon)
     {
         _onChampionWon = onChampionWon;
         Start();
@@ -45,18 +46,18 @@ internal class DeathManager : ListeningManagerBase
 
         Store.Instance.Get<ItemManager>().DropRandomItem(self.master);
 
-        var championName = Store.Instance.Get<PlayerManager>().ChampionName;
+        var champion = Store.Instance.Get<PlayerManager>().Champion;
 
-        if (championName != string.Empty)
+        if (champion == null)
         {
-            Log.Info("Only the Champion is alive: " + championName);
-
-            Stop();
-            _onChampionWon(championName);
+            Log.Info("There are still multiple fighters alive.");
         }
         else
         {
-            Log.Info("There are still multiple fighters alive.");
+            Log.Info("Only the Champion is alive: " + champion);
+
+            Stop();
+            _onChampionWon(champion);
         }
 
         orig(self);

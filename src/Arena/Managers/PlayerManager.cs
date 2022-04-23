@@ -1,4 +1,5 @@
 ﻿using Arena.Managers.Bases;
+using Arena.Models;
 using RoR2;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,29 +14,32 @@ internal class PlayerManager : ManagerBase
         var alivePlayerNames = string.Join(
             ", ",
             alivePlayers.Select(player => player.GetBody().GetUserName()));
-        var championName = ChampionName;
+        var champion = Champion;
 
         return new string[]
         {
             $"Alive player count: { alivePlayers.Length }",
             $"Alive players: { (alivePlayerNames == string.Empty ? "none" : alivePlayerNames) }",
-            $"Champion: { (championName == string.Empty ? "none" : championName) }."
+            $"Champion: { (champion == null ? "none" : champion.Name) }."
         };
     }
 
-    public string ChampionName
+    public Champion Champion
     {
         get
         {
             var alivePlayers = AlivePlayers;
 
             return alivePlayers.Length == 1
-                ? alivePlayers[0].GetBody().GetUserName()
-                : string.Empty;
+                ? new Champion(alivePlayers[0])
+                : null;
         }
     }
 
-    public CharacterMaster[] AlivePlayers => Server.AllPlayers.Where(user => IsAlive(user)).ToArray();
+    public int AlivePlayerCount => AlivePlayers.Length;
+
+    private static CharacterMaster[] AlivePlayers =>
+        Server.AllPlayers.Where(user => IsAlive(user)).ToArray();
 
     private static bool IsAlive(CharacterMaster player)
     {
