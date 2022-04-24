@@ -9,6 +9,10 @@ $OutputPath = "output"
 
 dotnet build /warnaserror --no-incremental --configuration Release --output $OutputPath
 
+if (!$?) {
+    exit 1
+}
+
 Copy-Item $OutputPath\$ProjectName.dll -Destination $PackagePath
 
 Remove-Item $OutputPath -Recurse
