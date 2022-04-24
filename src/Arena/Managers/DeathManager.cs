@@ -9,7 +9,7 @@ namespace Arena.Managers;
 
 internal class DeathManager : ListeningManagerBase
 {
-    private Action<Champion> _onChampionWon;
+    private Action<Champion>? _onChampionWon;
 
     public override IEnumerable<string> GetStatus() => new string[]
     {
@@ -57,7 +57,7 @@ internal class DeathManager : ListeningManagerBase
             Log.Info("Only the Champion is alive: " + champion);
 
             Stop();
-            _onChampionWon(champion);
+            _onChampionWon?.Invoke(champion);
         }
 
         orig(self);

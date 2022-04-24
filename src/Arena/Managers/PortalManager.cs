@@ -11,7 +11,7 @@ internal class PortalManager : ListeningManagerBase
 {
     public delegate Interactability orig_GetInteractability(GenericInteraction self, Interactor activator);
 
-    private Hook _hook_GetInteractability;
+    private Hook? _hook_GetInteractability;
 
     public override IEnumerable<string> GetStatus() => new string[]
     {
@@ -41,7 +41,7 @@ internal class PortalManager : ListeningManagerBase
     {
         On.RoR2.TeleporterInteraction.GetInteractability -= OnTeleporterInteractionGetInteractability;
 
-        _hook_GetInteractability.Dispose();
+        _hook_GetInteractability?.Dispose();
 
         Log.Info("Portals enabled.");
     }

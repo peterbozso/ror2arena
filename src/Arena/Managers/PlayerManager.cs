@@ -24,7 +24,7 @@ internal class PlayerManager : ManagerBase
         };
     }
 
-    public Champion Champion
+    public Champion? Champion
     {
         get
         {
