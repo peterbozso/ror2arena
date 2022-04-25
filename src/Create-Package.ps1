@@ -21,6 +21,10 @@ if (!$DestinationPath) {
     $DestinationPath = Get-Location
 }
 
-Compress-Archive $PackagePath\* -DestinationPath $DestinationPath\$ProjectName.zip -Force
+$ZipPath = "$DestinationPath\$ProjectName.zip"
+
+Compress-Archive $PackagePath\* -DestinationPath $ZipPath -Force
 
 Remove-Item $PackagePath\$ProjectName.dll
+
+Write-Host "`nPackage is successfully created at: $ZipPath" -ForegroundColor Green
