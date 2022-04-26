@@ -13,7 +13,7 @@ if (!$?) {
 
 New-Item $PackagePath -ItemType Directory | Out-Null
 
-Copy-Item @("$OutputPath\$ModName.dll", 'icon.png', 'manifest.json', 'README.md') -Destination $PackagePath
+Copy-Item "$OutputPath\$ModName.dll", 'icon.png', 'manifest.json', 'README.md' -Destination $PackagePath
 
 Remove-Item $OutputPath -Recurse
 
