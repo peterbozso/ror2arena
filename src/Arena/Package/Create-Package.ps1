@@ -1,4 +1,4 @@
-$ErrorActionPreference = "Stop"
+$ErrorActionPreference = 'Stop'
 
 $ModName = 'Arena'
 $OutputPath = 'output'
