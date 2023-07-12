@@ -36,6 +36,16 @@ internal class ArenaManager : ListeningManagerBase
 
         IsEventInProgress = false;
 
+        var currentStageCount = Run.instance.stageClearCount;
+
+        if (ArenaPlugin.maxStageCount != 0 && currentStageCount >= ArenaPlugin.maxStageCount)
+        {
+            Announce("Congratulations! You're free from the arena!");
+            Log.Info($"Current stage number: {currentStageCount}. Arena events will cease due to max config.");
+            ArenaEnabled = false;
+            return;
+        }
+
         Log.Info("Arena event ended.");
     }
 
@@ -88,14 +98,6 @@ internal class ArenaManager : ListeningManagerBase
         {
             Announce("Dissapointing! There's not enough players to begin the arena.");
             Log.Info($"Number of alive players: {alivePlayerCount}. Not starting the Arena event.");
-            return;
-        }
-
-        if (ArenaPlugin.maxStageCount != 0 && currentStageCount > ArenaPlugin.maxStageCount)
-        {
-            Announce("Congratulations! You're free from the arena!");
-            Log.Info($"Current stage number: {currentStageCount}. Not starting the Arena event.");
-            ArenaEnabled = false;
             return;
         }
 
