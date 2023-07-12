@@ -23,6 +23,7 @@ public class ArenaPlugin : BaseUnityPlugin
     public static int minAlivePlayerCount;
     public static int maxArenaSeconds;
     public static int maxStageCount;
+
     public static bool voteEndEnabled;
     public static float votePercentNeeded;
 
@@ -37,12 +38,19 @@ public class ArenaPlugin : BaseUnityPlugin
 
         Log.Debug("Plugin hooked.");
 
-        int minAlivePlayerCount = Config.Bind<int>(new ConfigDefinition("Main", "Minimum Alive Players"), 2, new ConfigDescription("Minimum Alive Players required to start an an Arena.")).Value;
-        int maxStageCount = Config.Bind<int>(new ConfigDefinition("Main", "Maximum Stage Count"), 6, new ConfigDescription("After this number of stages, Arena events will cease. 0 Means infinite.")).Value;
-        int maxArenaSeconds = Config.Bind<int>(new ConfigDefinition("Main", "Maximum Fighting Seconds"), 120, new ConfigDescription("Maximum seconds before an Arena even will end in a draw. 0 Means infinite.")).Value;
+        //TODO: Make this is a percent of alive players instead.
+        minAlivePlayerCount = Config.Bind<int>(new ConfigDefinition("Main", "Minimum Alive Players"), 2, new ConfigDescription("Minimum Alive Players required to start an an Arena.")).Value;
+        maxStageCount = Config.Bind<int>(new ConfigDefinition("Main", "Maximum Stage Count"), 4, new ConfigDescription("After this number of stages, Arena events will cease. 0 Means infinite.")).Value;
+        maxArenaSeconds = Config.Bind<int>(new ConfigDefinition("Main", "Maximum Fighting Seconds"), 120, new ConfigDescription("Maximum seconds before an Arena even will end in a draw. 0 Means infinite.")).Value;
 
-        bool voteEndEnabled = Config.Bind<bool>(new ConfigDefinition("Main", "Arena voting"), true, new ConfigDescription("If true, players can vote to end the Arena event.")).Value;
-        float votePercentNeeded = Config.Bind<float>(new ConfigDefinition("Main", "Arena end voting percentage"), 0.5f, new ConfigDescription("The percentage of players that need to vote to end the Arena event.")).Value;
+        voteEndEnabled = Config.Bind<bool>(new ConfigDefinition("Main", "Arena voting"), true, new ConfigDescription("If true, players can vote to end the Arena event.")).Value;
+        votePercentNeeded = Config.Bind<float>(new ConfigDefinition("Main", "Arena end voting percentage"), 0.5f, new ConfigDescription("The percentage of players that need to vote to end the Arena event.")).Value;
+
+        Log.Debug($"minAlivePlayerCount: {minAlivePlayerCount}");
+        Log.Debug($"maxStageCount: {maxStageCount}");
+        Log.Debug($"maxArenaSeconds: {maxArenaSeconds}");
+        Log.Debug($"voteEndEnabled: {voteEndEnabled}");
+        Log.Debug($"votePercentNeeded: {votePercentNeeded}");
     }
 
     public void OnDestroy()
@@ -77,7 +85,7 @@ public class ArenaPlugin : BaseUnityPlugin
         }
 
         Store.Instance.Get<ArenaManager>().WatchTeleporter();
-        //ChaCommands.votedPlayers = new List<string>();
+        ArenaManager.ArenaEnabled = true;
 
         Log.Info("Run started.");
     }
@@ -92,7 +100,6 @@ public class ArenaPlugin : BaseUnityPlugin
         }
 
         Store.Instance.CleanUp();
-        //ChaCommands.votedPlayers = new List<string>();
 
         Log.Info("Run ended.");
     }

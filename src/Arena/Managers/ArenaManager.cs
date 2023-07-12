@@ -13,8 +13,8 @@ internal class ArenaManager : ListeningManagerBase
     // https://es.wikipedia.org/wiki/Arena_(color)
     private static readonly Color ArenaColor = Color.FromArgb(236, 226, 198);
 
+    public static bool ArenaEnabled;
     public bool IsEventInProgress;
-    public bool ArenaEnabled = true;
 
     public override IEnumerable<string> GetStatus() => new string[]
     {
@@ -75,15 +75,28 @@ internal class ArenaManager : ListeningManagerBase
         var alivePlayerCount = Store.Instance.Get<PlayerManager>().AlivePlayerCount;
         var currentStageCount = Run.instance.stageClearCount;
 
+        if (!ArenaEnabled)
+        {
+            Log.Info("Arena event is disabled.");
+            return;
+        }
+
+        //Debug
+        Log.Info($"Alive player count: {alivePlayerCount}.");
+        Log.Info($"minAlive Count: {ArenaPlugin.minAlivePlayerCount}.");
+
         if (alivePlayerCount < ArenaPlugin.minAlivePlayerCount)
         {
+            Announce("Dissapointing! There's not enough players to begin the arena.");
             Log.Info($"Number of alive players: {alivePlayerCount}. Not starting the Arena event.");
             return;
         }
 
         if (ArenaPlugin.maxStageCount != 0 && currentStageCount > ArenaPlugin.maxStageCount)
         {
+            Announce("Congratulations! You're free from the arena!");
             Log.Info($"Current stage number: {currentStageCount}. Not starting the Arena event.");
+            ArenaEnabled = false;
             return;
         }
 
@@ -119,5 +132,5 @@ internal class ArenaManager : ListeningManagerBase
     }
 
     private static void Announce(string message) =>
-        ChatMessage.SendColored(message, ArenaColor, "Arena Mouth");
+        ChatMessage.SendColored(message, ArenaColor, "Announcer:");
 }
