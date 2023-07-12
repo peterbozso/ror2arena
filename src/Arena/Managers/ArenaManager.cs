@@ -6,6 +6,7 @@ using RoR2;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace Arena.Managers;
 
@@ -74,6 +75,7 @@ internal class ArenaManager : ListeningManagerBase
     private async void OnTeleporterCharged(TeleporterInteraction tpi)
     {
         var alivePlayerCount = Store.Instance.Get<PlayerManager>().AlivePlayerCount;
+        //var alivePlayerPercent = (float)alivePlayerCount / (float)LocalUserManager.readOnlyLocalUsersList.Count;
         var currentStageCount = Run.instance.stageClearCount;
 
         if (!ArenaEnabled)
@@ -111,24 +113,31 @@ internal class ArenaManager : ListeningManagerBase
         Log.Info("Arena event started.");
 
         //Arena Event timeout
+        if (ArenaPlugin.maxArenaSeconds == 0) return;
         int arenaDuration = ArenaPlugin.maxArenaSeconds;
+        Log.Info(arenaDuration);
 
-        while (IsEventInProgress && arenaDuration <= 0)
+        while (arenaDuration > 0 && IsEventInProgress)
         {
-            if (!IsEventInProgress)
-                break;
-            Thread.Sleep(2000);
-            arenaDuration-=2;
+            switch (arenaDuration)
+            {
+                case 30:
+                    Announce("30 seconds left!");
+                    break;
+                case 10:
+                    Announce("10 seconds left!");
+                    break;
+            }
+            await Task.Delay(1000);
+            arenaDuration -= 1;
         }
 
         if (IsEventInProgress) OnArenaTimeout();
     }
 
-    //Todo: Add a config for a draw timer
     private void OnArenaTimeout()
     {
-        Announce("Dissapointing! There is no winner of this Arena event.");
-
+        Announce("Dissapointing! There is no winner of this Arena.");
         EndArenaEvent();
     }
 
