@@ -81,10 +81,6 @@ internal class ArenaManager : ListeningManagerBase
             return;
         }
 
-        //Debug
-        Log.Info($"Alive player count: {alivePlayerCount}.");
-        Log.Info($"minAlive Count: {ArenaPlugin.minAlivePlayerCount}.");
-
         if (alivePlayerCount < ArenaPlugin.minAlivePlayerCount)
         {
             Announce("Dissapointing! There's not enough players to begin the arena.");
