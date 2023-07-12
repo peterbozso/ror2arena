@@ -75,15 +75,13 @@ internal class ArenaManager : ListeningManagerBase
         var alivePlayerCount = Store.Instance.Get<PlayerManager>().AlivePlayerCount;
         var currentStageCount = Run.instance.stageClearCount;
 
-        //TODO: Add a config for the minimum number of alive players required to start.
-        if (alivePlayerCount < 2)
+        if (alivePlayerCount < ArenaPlugin.minAlivePlayerCount)
         {
             Log.Info($"Number of alive players: {alivePlayerCount}. Not starting the Arena event.");
             return;
         }
 
-        //TODO: Add a config for the max stage number before the Arena event stop happening
-        if (currentStageCount > 4)
+        if (ArenaPlugin.maxStageCount != 0 && currentStageCount > ArenaPlugin.maxStageCount)
         {
             Log.Info($"Current stage number: {currentStageCount}. Not starting the Arena event.");
             return;
