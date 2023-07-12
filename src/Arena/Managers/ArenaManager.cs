@@ -5,6 +5,7 @@ using R2API.Utils;
 using RoR2;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Threading;
 
 namespace Arena.Managers;
 
@@ -70,7 +71,7 @@ internal class ArenaManager : ListeningManagerBase
         Log.Info($"Stopped watching the Teleporter.");
     }
 
-    private void OnTeleporterCharged(TeleporterInteraction tpi)
+    private async void OnTeleporterCharged(TeleporterInteraction tpi)
     {
         var alivePlayerCount = Store.Instance.Get<PlayerManager>().AlivePlayerCount;
         var currentStageCount = Run.instance.stageClearCount;
@@ -108,6 +109,19 @@ internal class ArenaManager : ListeningManagerBase
         IsEventInProgress = true;
 
         Log.Info("Arena event started.");
+
+        //Arena Event timeout
+        int arenaDuration = ArenaPlugin.maxArenaSeconds;
+
+        while (IsEventInProgress && arenaDuration <= 0)
+        {
+            if (!IsEventInProgress)
+                break;
+            Thread.Sleep(2000);
+            arenaDuration-=2;
+        }
+
+        if (IsEventInProgress) OnArenaTimeout();
     }
 
     //Todo: Add a config for a draw timer
@@ -128,5 +142,5 @@ internal class ArenaManager : ListeningManagerBase
     }
 
     private static void Announce(string message) =>
-        ChatMessage.SendColored(message, ArenaColor, "Announcer:");
+        ChatMessage.SendColored(message, ArenaColor, "Announcer");
 }

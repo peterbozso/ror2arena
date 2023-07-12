@@ -12,6 +12,9 @@ internal class Champion
 
     public void Rejuvenate()
     {
-        // TODO!
+        //TODO: Probably make this better
+        _characterMaster.GetBody().healthComponent.HealFraction(1f, default);
+        //Give them a maximum barrier
+        _characterMaster.GetBody().healthComponent.AddBarrier(1000f);
     }
 }
