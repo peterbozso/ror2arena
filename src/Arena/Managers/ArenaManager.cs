@@ -39,7 +39,7 @@ internal class ArenaManager : ListeningManagerBase
 
         if (ArenaPlugin.maxStageCount != 0 && currentStageCount >= ArenaPlugin.maxStageCount)
         {
-            Announce("Congratulations! You're free from the arena!");
+            Announce("Esteemed Combatants, you have become too experienced for future Arena events!");
             Log.Info($"Current stage number: {currentStageCount}. Arena events will cease due to max config.");
             ArenaEnabled = false;
             return;
@@ -163,5 +163,5 @@ internal class ArenaManager : ListeningManagerBase
     }
 
     private static void Announce(string message) =>
-        ChatMessage.SendColored(message, ArenaColor, "Announcer");
+        ChatMessage.SendColored(message, ArenaColor, "Arena Mouth");
 }
