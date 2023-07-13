@@ -14,13 +14,9 @@ internal class Champion
     {
         //Invulnerability for 10 seconds
         _characterMaster.GetBody().AddTimedBuff(BuffCatalog.FindBuffIndex("Immune"), 10f);
-        //Copy  blast shower's activation effects
-        _characterMaster.GetBody().AddTimedBuff(BuffCatalog.FindBuffIndex("BlastShower"), 10f);
-
-
         //Heal the player to full health
         _characterMaster.GetBody().healthComponent.HealFraction(1f, default);
-        //Give them a maximum sheild, just in case.
+        //Give them a maximum sheild, just in case
         _characterMaster.GetBody().healthComponent.AddBarrier(1000f);
     }
 }

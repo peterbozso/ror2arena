@@ -68,6 +68,7 @@ internal class ArenaManager : ListeningManagerBase
 
         EndArenaEvent();
     }
+
     protected override void StartListening()
     {
         TeleporterInteraction.onTeleporterChargedGlobal += OnTeleporterCharged;
@@ -101,22 +102,38 @@ internal class ArenaManager : ListeningManagerBase
             return;
         }
 
+        Store.Instance.Get<ClockManager>().PauseClock();
+        Store.Instance.Get<PortalManager>().DisableAllPortals();
+
+        if (ArenaPlugin.delayArenaSec != 0)
+        {
+            Announce($"The Arena will begin in {ArenaPlugin.delayArenaSec} seconds!");
+            await Task.Delay(ArenaPlugin.delayArenaSec * 1000);
+        }
+
         Announce("Good people of the Imperial City, welcome to the Arena!");
 
-        Store.Instance.Get<ClockManager>().PauseClock();
+        //
+
+        //We should temporarily take away items that could be lost
+        //Power Elixer, Dio's Best Friend, and permenant damaging things like Symbiotic Scorpion
+        //Collect all the items in a list and remove them from the player inventory
+        //When the Arena event ends, give the items back to the player
+
+
+
+
         Store.Instance.Get<FriendlyFireManager>().EnableFriendlyFire();
-        //TODO: Take away single time use items like Power Elixir and Symbotic Scorpion
-        //Working out how to return them after might be painful...
-        Store.Instance.Get<PortalManager>().DisableAllPortals();
         Store.Instance.Get<DeathManager>().WatchDeaths(OnChampionWon);
+
 
         IsEventInProgress = true;
 
         Log.Info("Arena event started.");
 
         //Arena Event timeout
-        if (ArenaPlugin.maxArenaSeconds == 0) return;
-        int arenaDuration = ArenaPlugin.maxArenaSeconds;
+        if (ArenaPlugin.maxArenaDurationSec == 0) return;
+        int arenaDuration = ArenaPlugin.maxArenaDurationSec;
         Log.Info(arenaDuration);
 
         while (arenaDuration > 0 && IsEventInProgress)
