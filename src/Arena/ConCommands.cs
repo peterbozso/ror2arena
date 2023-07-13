@@ -30,6 +30,6 @@ internal static class ConCommands
 
         Log.Debug($"{EndArenaCommandName}: Ending arena event in response to console command...");
 
-        arenaManager.EndArenaEvent();
+        arenaManager.ForceEndArenaEvent();
     }
 }
