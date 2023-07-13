@@ -25,6 +25,8 @@ public class ArenaPlugin : BaseUnityPlugin
     public static int maxArenaDurationSec;
     public static int maxStageCount;
 
+    public static bool protectChampion;
+
     //public static bool voteEndEnabled;
     //public static float votePercentNeeded;
 
@@ -43,16 +45,14 @@ public class ArenaPlugin : BaseUnityPlugin
         minAlivePlayerCount = Config.Bind<int>(new ConfigDefinition("Main", "Minimum Alive Participants"), 2, new ConfigDescription("Minimum alive players required to start an an Arena.")).Value;
         maxStageCount = Config.Bind<int>(new ConfigDefinition("Main", "Maximum Stage Count"), 6, new ConfigDescription("After this number of stages, Arena events will cease. 0 for infinite.")).Value;
         maxArenaDurationSec = Config.Bind<int>(new ConfigDefinition("Main", "Maximum Fighting Seconds"), 120, new ConfigDescription("Seconds before an Arena even will end in a draw. 0 for infinite.")).Value;
-        Log.Debug($"delayArenaSec: {delayArenaSec}");
-        Log.Debug($"minAlivePlayerCount: {minAlivePlayerCount}");
-        Log.Debug($"maxStageCount: {maxStageCount}");
-        Log.Debug($"maxArenaDurationSec: {maxArenaDurationSec}");
 
         //TODO: Add voting to end the Arena event
         //voteEndEnabled = Config.Bind<bool>(new ConfigDefinition("Main", "Arena voting"), true, new ConfigDescription("If true, players can vote to end the Arena event.")).Value;
         //votePercentNeeded = Config.Bind<float>(new ConfigDefinition("Main", "Arena end voting percentage"), 0.5f, new ConfigDescription("The percentage of players that need to vote to end the Arena event.")).Value;
         //Log.Debug($"voteEndEnabled: {voteEndEnabled}");
         //Log.Debug($"votePercentNeeded: {votePercentNeeded}");
+
+        protectChampion = Config.Bind<bool>(new ConfigDefinition("Main", "Protect Champion"), true, new ConfigDescription("Victor of the arena will be healed and invulnerable for a few moments.")).Value;
     }
 
     public void OnDestroy()

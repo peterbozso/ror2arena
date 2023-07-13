@@ -5,7 +5,6 @@ using R2API.Utils;
 using RoR2;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace Arena.Managers;
@@ -102,6 +101,8 @@ internal class ArenaManager : ListeningManagerBase
             return;
         }
 
+        IsEventInProgress = true;
+
         Store.Instance.Get<ClockManager>().PauseClock();
         Store.Instance.Get<PortalManager>().DisableAllPortals();
 
@@ -113,21 +114,13 @@ internal class ArenaManager : ListeningManagerBase
 
         Announce("Good people of the Imperial City, welcome to the Arena!");
 
-        //
-
         //We should temporarily take away items that could be lost
         //Power Elixer, Dio's Best Friend, and permenant damaging things like Symbiotic Scorpion
         //Collect all the items in a list and remove them from the player inventory
         //When the Arena event ends, give the items back to the player
 
-
-
-
         Store.Instance.Get<FriendlyFireManager>().EnableFriendlyFire();
         Store.Instance.Get<DeathManager>().WatchDeaths(OnChampionWon);
-
-
-        IsEventInProgress = true;
 
         Log.Info("Arena event started.");
 
@@ -164,7 +157,7 @@ internal class ArenaManager : ListeningManagerBase
     {
         Announce($"Good people, we have a winner! All hail the combatant, {champion.Name}! Champion, leave the Arena now and rest! You've earned it!");
 
-        champion.Rejuvenate();
+        if (ArenaPlugin.protectChampion) champion.Rejuvenate();
 
         EndArenaEvent();
     }
