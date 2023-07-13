@@ -13,12 +13,11 @@ internal class Champion
     public void Rejuvenate()
     {
         //Invulnerability for 10 seconds
+        //I don't know which of these does what so just gonna add both.
         _characterMaster.GetBody().AddTimedBuff(RoR2Content.Buffs.HiddenInvincibility, 10f);
         _characterMaster.GetBody().AddTimedBuff(RoR2Content.Buffs.Immune, 10f);
 
         //Heal the player to full health
         _characterMaster.GetBody().healthComponent.HealFraction(1f, default);
-        //Give them a maximum sheild, just in case
-        _characterMaster.GetBody().healthComponent.AddBarrier(1000f);
     }
 }
