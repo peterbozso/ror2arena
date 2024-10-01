@@ -23,7 +23,7 @@ jobs:
         shell: pwsh
         run: .\Create-Package.ps1
 
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           name: arena
           path: src\Arena\Package\Arena.zip
